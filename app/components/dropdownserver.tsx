@@ -8,10 +8,12 @@ import { SigninForm } from './auth/SigninForm'
 import { SignupForm } from './auth/SignupForm'
 import { toast } from 'react-hot-toast'
 import { sign } from 'crypto'
+import { useAuthDialog } from '../hooks/auth-dialog'
 
 const ServersDropDownComponent = () => {
     const { user } = useAuth()
     const dialog = useDialog()
+    const authdialog = useAuthDialog()
     const { dialogType, formValues, state, setFormValues } = useContent()
     const [signin, setSignin] = React.useState(true)
 
@@ -24,12 +26,7 @@ const ServersDropDownComponent = () => {
     ]
 
     const handleAuth = () => {
-        dialog.showDialog({
-            title: dialogType ? "Welcome Back! Sign In" : "Sign up for A new Account",
-            type: "component",
-            message: "",
-            component: dialogType === "login" ? <SigninForm /> : dialogType === "register" ? <SignupForm /> : null,
-        })
+        authdialog.showSignin()
     }
 
     const handleSignout = () => {

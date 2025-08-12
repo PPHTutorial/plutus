@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { ContentProvider } from "./hooks/context";
 import { AuthProvider } from "./hooks/AuthContext";
 import LiveTransactionPopup from "./components/LiveTransactionPopup";
+import { AuthDialogProvider } from "./hooks/auth-dialog";
 
 
 export const metadata: Metadata = {
@@ -94,12 +95,12 @@ export default function RootLayout({
         <Toaster />
         <AuthProvider>
           <ContentProvider>
-            <AuthProvider>
+            <AuthDialogProvider>
               <DialogProvider>
                 {children}
                 <LiveTransactionPopup />
               </DialogProvider>
-            </AuthProvider>
+            </AuthDialogProvider>
           </ContentProvider>
         </AuthProvider>
       </body>
