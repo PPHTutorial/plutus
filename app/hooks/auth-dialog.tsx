@@ -28,7 +28,7 @@ export function AuthDialogProvider({ children }: { children: ReactNode }) {
   })
 
   const showSignin = () => {
-    setState({ type: 'signin', isOpen: true })
+    setState({ type: 'signin', isOpen: true }) 
   }
 
   const showSignup = () => {
