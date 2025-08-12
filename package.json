@@ -1,0 +1,78 @@
+{
+  "name": "Plutus",
+  "version": "5.0.0",
+  "private": true,
+  "main": "electron/main.js",
+  "type": "module",
+  "description": "Plutus - A cryptocurrency wallet and exchange application",
+  "keywords": [
+    "cryptocurrency",
+    "wallet",
+    "exchange",
+    "crypto",
+    "flashbtc"
+  ],
+  "license": "MIT",
+  "homepage": "https://packedtools.tools",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": {
+    "name": "FlashBTC",
+    "email": "info@flashbtc.com"
+  },
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@auth/prisma-adapter": "^2.9.1",
+    "@heroicons/react": "^2.2.0",
+    "@prisma/client": "^6.12.0",
+    "@react-email/render": "^1.1.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.9",
+    "axios": "^1.10.0",
+    "bcryptjs": "^3.0.2",
+    "cheerio": "^1.0.0",
+    "jose": "^6.0.11",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "0.509.0",
+    "moment": "^2.30.1",
+    "multicoin-address-validator": "^0.5.25",
+    "next": "15.3.1",
+    "next-auth": "^4.24.11",
+    "nodemailer": "^6.6.5",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
+    "react-icons": "^5.5.0",
+    "request": "^2.88.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "systeminformation": "^5.25.11",
+    "tailwind-merge": "^3.2.0",
+    "tw-animate-css": "^1.2.8",
+    "zod": "^3.25.67",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/multicoin-address-validator": "^0.5.3",
+    "@types/node": "22.15.17",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.1",
+    "prisma": "^6.9.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

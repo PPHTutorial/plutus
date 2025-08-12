@@ -1,0 +1,9 @@
+{
+    "name": "plutus",
+    "version": 2,
+    "build": {
+        "env": {
+            "NPM_FLAGS": "--force"
+        }
+    }
+}

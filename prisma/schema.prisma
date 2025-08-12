@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+enum AccessType {
+  FREE
+  SMALL
+  MEDIUM
+  LARGE
+  XLARGE
+  XXLARGE
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum ProviderType {
+  STRIPE
+  PAYPAL
+  NOWPAYMENTS
+  FLUTTERWAVE
+}
+
+enum PaymentMethod {
+  CARD
+  BANK_TRANSFER
+  CRYPTOCURRENCY
+  PAYPAL
+  CASH
+  OTHER
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  EXPIRED
+}
+
+enum TransactionStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+}
+
+model User {
+  id               String         @id @default(cuid())
+  ip               String         @unique
+  username         String
+  email            String         @unique
+  password         String
+  emailVerified    Boolean        @default(false)
+  location         String
+  role             String         @default("USER")
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  currentPlan      AccessType     @default(FREE)
+  payments         Payment[]
+  transactions     Transaction[]
+  subscription     Subscription[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  referrerId       String?        @unique @default(cuid())
+  sponsors         Sponsorship[]  @relation("UserSponsor")
+  sponsee          Sponsorship[]  @relation("UserSponsee")
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  amount        Float
+  User          User          @relation(fields: [userId], references: [id])
+  userId        String
+  status        PaymentStatus @default(PENDING)
+  transactionId String        @unique
+  currency      String        @default("USD")
+  paymentMethod PaymentMethod @default(CRYPTOCURRENCY)
+  provider      ProviderType  @default(NOWPAYMENTS)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Transaction {
+  id                String            @id @default(cuid())
+  amount            Float
+  User              User              @relation(fields: [userId], references: [id])
+  userId            String
+  type              AccessType        @default(FREE)
+  status            TransactionStatus @default(PENDING)
+  transactionId     String            @unique
+  
+  // Enhanced transaction details for explorer
+  hash              String?           @unique
+  network           String            @default("BTC") // BTC, ETH, USDT, etc.
+  currency          String            @default("BTC") // Same as network for display
+  senderAddress     String            @default("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
+  receiverAddress   String            @default("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
+  receiverEmail     String?
+  blockHeight       Int?
+  confirmations     Int               @default(0)
+  fee               Float             @default(0)
+  gasUsed           Int?
+  gasPrice          String?
+  nonce             Int?
+  size              Int?
+  weight            Int?
+  inputs            Int               @default(1)
+  outputs           Int               @default(1)
+  explorerUrl       String?
+  apiUrl            String?
+  blockHash         String?
+  blockTime         DateTime?
+  isConfirmed       Boolean           @default(false)
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model Plans {
+  id          String     @id @default(cuid())
+  title       String
+  description String
+  accessType  AccessType
+  price       Float
+  features    String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Subscription {
+  id        String             @id @default(cuid())
+  planId    String
+  user      User               @relation(fields: [userId], references: [id])
+  userId    String
+  plan      AccessType
+  status    SubscriptionStatus @default(ACTIVE)
+  startDate DateTime           @default(now())
+  endDate   DateTime
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+}
+
+model Sponsorship {
+  id              String   @id @default(cuid())
+  sponsorId       String
+  sponseeId       String
+  sponsoredAmount Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  sponsor User @relation("UserSponsor", fields: [sponsorId], references: [id])
+  sponsee User @relation("UserSponsee", fields: [sponseeId], references: [id])
+}

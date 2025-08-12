@@ -1,0 +1,1 @@
+export type DialogType = 'alert' | 'confirm' | 'progress' | 'component' | 'auth'
