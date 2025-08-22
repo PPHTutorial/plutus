@@ -14,6 +14,7 @@ import LiveTransactionControls from './components/LiveTransactionControls'
 import { getLocationData } from './actions/location'
 import { getCurrentUser } from './utils/jwt'
 import Link from 'next/link'
+import CryptoPortfolio from './components/CryptoPortfolio'
 
 export default async function Home() {
   const headersList = headers()
@@ -37,10 +38,10 @@ export default async function Home() {
         <div>
           {/* <p className="text-red-500">Notice: System is currently undergoing maintenance. Every user has to sign up for a new account</p>  */}
         </div>
-        
+
         <div className="flex items-center gap-4 justify-between mt-4 p-3 bg-green-900/20 border border-green-800/30 rounded-md">
           <p className="text-sm text-green-400">
-            Get 
+            Get
             <a
               href="https://t.me/GXWitcher"
               target="_blank"

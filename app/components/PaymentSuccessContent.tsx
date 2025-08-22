@@ -6,14 +6,31 @@ import PaymentStatus from '@/app/components/PaymentStatus';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
-export default function PaymentSuccessContent() {
+interface PaymentSuccessContentProps {
+    params?: Promise<{
+        orderId: string;
+    }>;
+}
+
+export default function PaymentSuccessContent({ params }: PaymentSuccessContentProps) {
     const searchParams = useSearchParams();
     const [paymentId, setPaymentId] = useState<string | null>(null);
     const [paymentComplete, setPaymentComplete] = useState(false);
     const [paymentData, setPaymentData] = useState<any>(null);
+    const [orderId, setOrderId] = useState<string | null>(null);
 
     useEffect(() => {
-        // Get payment ID from URL params or localStorage
+        const getOrderId = async () => {
+            if (params) {
+                const resolvedParams = await params;
+                setOrderId(resolvedParams.orderId);
+            }
+        };
+        getOrderId();
+    }, [params]);
+
+    useEffect(() => {
+        
         const urlPaymentId = searchParams?.get('payment_id');
         const storedPayment = localStorage.getItem('currentPayment');
 
@@ -27,8 +44,27 @@ export default function PaymentSuccessContent() {
             } catch (error) {
                 console.error('Error parsing stored payment:', error);
             }
+        } else if (orderId) {
+            // Fetch payment by orderId
+            fetchPaymentByOrderId(orderId);
         }
-    }, [searchParams]);
+    }, [searchParams, orderId]);
+
+    const fetchPaymentByOrderId = async (orderIdParam: string) => {
+        try {
+            const response = await fetch(`/api/payments/order/${orderIdParam}`);
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
+                setPaymentId(data.payment.transactionId);
+                setPaymentData(data.payment);
+            } else {
+                console.error('Failed to fetch payment by order ID:', data.error);
+            }
+        } catch (error) {
+            console.error('Error fetching payment by order ID:', error);
+        }
+    };
 
     const handlePaymentComplete = () => {
         setPaymentComplete(true);

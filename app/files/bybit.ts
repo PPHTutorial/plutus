@@ -1,226 +1,274 @@
 export const BybitDeposit = () => {
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>USDT Deposit Successful</title>
-        <style>
-            body { 
-                margin: 0; 
-                padding: 0; 
-                background-color: #efefef; 
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
-            }
-            .container { 
-                max-width: 600px; 
-                margin: 0 auto; 
-                background-color: #ffffff; 
-            }
-            .header { 
-                width: 100%; 
-                text-align: center; 
-                padding: 30px 0; 
-                background-color: #070606;
-            }
-            .header img { 
-                width: 120px; 
-                height: auto; 
-                display: block; 
-                margin: 0 auto; 
-            }
-            .content { 
-                padding: 30px 40px; 
-            }
-            .title { 
-                font-size: 24px; 
-                font-weight: 700; 
-                color: #1a1a1a; 
-                margin-bottom: 20px;
-                text-align: center;
-            }
-            .success-icon {
-                text-align: center;
-                margin: 20px 0;
-            }
-            .amount-section {
-                background-color: #f8f9fa;
-                border-radius: 8px;
-                padding: 20px;
-                margin: 20px 0;
-                text-align: center;
-            }
-            .amount {
-                font-size: 28px;
-                font-weight: 700;
-                color: #1a1a1a;
-                margin-bottom: 10px;
-            }
-            .currency {
-                font-size: 16px;
-                color: #666;
-                margin-bottom: 15px;
-            }
-            .message { 
-                font-size: 14px; 
-                line-height: 22px; 
-                color: #333; 
-                margin-bottom: 20px; 
-            }
-            .message a { 
-                color: #f7931a; 
-                text-decoration: none; 
-            }
-            .info-box {
-                background-color: #fff3e0;
-                border-left: 4px solid #f7931a;
-                padding: 15px 20px;
-                margin: 20px 0;
-            }
-            .info-box strong {
-                color: #1a1a1a;
-            }
-            .dashboard-btn { 
-                display: inline-block; 
-                background-color: #f7931a; 
-                color: #ffffff; 
-                padding: 12px 30px; 
-                border-radius: 6px; 
-                text-decoration: none; 
-                font-weight: 600; 
-                font-size: 14px; 
-                margin: 20px 0; 
-                transition: background-color 0.3s;
-            }
-            .dashboard-btn:hover {
-                background-color: #e8840f;
-            }
-            .footer-divider { 
-                border-top: 1px solid #eee; 
-                margin: 30px 0; 
-            }
-            .social-title { 
-                text-align: center; 
-                color: #f7931a; 
-                font-weight: 700; 
-                font-size: 16px; 
-                margin-bottom: 20px; 
-            }
-            .social-links { 
-                text-align: center; 
-                margin: 20px 0; 
-            }
-            .social-links a { 
-                display: inline-block; 
-                margin: 0 8px; 
-            }
-            .social-links img { 
-                width: 24px; 
-                height: 24px; 
-                border-radius: 4px; 
-            }
-            .small-text { 
-                font-size: 12px; 
-                line-height: 18px; 
-                color: #666; 
-            }
-            .small-text a { 
-                color: #f7931a; 
-            }
-            .disclaimer { 
-                font-size: 11px; 
-                line-height: 16px; 
-                color: #666; 
-                margin: 20px 0; 
-                padding: 15px;
-                background-color: #f8f9fa;
-                border-radius: 6px;
-            }
-            .disclaimer a { 
-                color: #f7931a; 
-            }
-            .copyright { 
-                text-align: center; 
-                font-size: 12px; 
-                color: #999; 
-                margin: 25px 0; 
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <!-- Header -->
-            <div class="header">
-                <img src="https://static.bybit.com/web/images/common/logo_email.png" alt="Bybit Logo">
-            </div>
+  return `<div id=":hu" class="ii gt" jslog="20277; u014N:xr6bB; 1:WyIjdGhyZWFkLWY6MTc2Nzc4MjI3MjQ2NDYwNTc0MCJd; 4:WyIjbXNnLWY6MTc2Nzc4MjI3MjQ2NDYwNTc0MCIsbnVsbCxudWxsLG51bGwsMSwwLFsxLDAsMF0sMTU3LDEwODcsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLDEsbnVsbCxudWxsLFszXSxudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbCwwLDBd"><div id=":ht" class="a3s aiL "><div class="adM">
+<p></p>
 
-            <!-- Main Content -->
-            <div class="content">
-                <div class="title">Deposit Successful</div>
-                
-                <div class="success-icon">
-                    <img src="https://static.bybit.com/web/images/email/success-icon.png" alt="Success" width="60">
-                </div>
 
-                <div class="amount-section">
-                    <div class="amount">₮ 500.00</div>
-                    <div class="currency">USDT (TRC20)</div>
-                    <div style="font-size: 14px; color: #666;">has been successfully deposited to your Bybit account</div>
-                </div>
+</div><center>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="m_2351673791393092543bodyTable">
+<tbody>
+<tr>
+<td align="center" valign="top" id="m_2351673791393092543bodyCell">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td align="center" valign="top" id="m_2351673791393092543templateHeader" style="background-color:#070606">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td valign="top">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+<tbody>
+<tr>
+<td valign="top" style="padding:9px">
+<table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" style="min-width:100%">
+<tbody>
+<tr>
+<td valign="top" style="text-align:center;padding:0 9px 0 9px"><img align="center" alt="" src="https://ci3.googleusercontent.com/meips/ADKq_NYkap6AekNAoZni9xE9FXQS_XhEHbF20RlOhyRMS9XwGBEudY3sbRyD-NzUkE-cN75zneeuCZm6ECy2YT-_Y2oWeMrvVB_rTrCtKSJDhnrcPLbPsdb-_7ivDX1WBNb5KYxYPA8QR6Z2fUgJ2hnFpyoozCUrXdqA4nQ=s0-d-e1-ft#https://mcusercontent.com/9156bab31b8d15668939142c9/images/5a285512-ee34-4a7e-1253-03b80b0e93e9.png" width="298.92" style="max-width:2917px;padding-bottom:0;display:inline!important;vertical-align:bottom" class="CToWUd" data-bit="iit" jslog="138226; u014N:xr6bB; 53:WzAsMl0."></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td align="center" valign="top" id="m_2351673791393092543templateBody">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td valign="top">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+<tbody>
+<tr>
+<td valign="top" style="padding-top:9px"> 
+<table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%;min-width:100%" width="100%">
+<tbody>
+<tr>
+<td valign="top" style="padding:0px 18px 9px">
+<div style="text-align:left;font-size:14px"><p>Dear valued <span class="il"><span class="il">Bybit</span></span> trader,</p>
+<p>Your deposit has been confirmed.</p>
+<p>Deposit amount: 2.49 ETH</p>
+<p>Deposit address: 0x73459227c123d8ed8b94248740cbff1333a79607fc98cec412b97ab5f773f2be</p>
+<p>Timestamp: 2025-08-14 03:26:28(UTC)</p>
+<p>If you believe your account has been compromised, please contact us immediately via live chat or email <a href="mailto:support@bybit.com" target="_blank">support@<span class="il"><span class="il">bybit</span></span>.com</a> using your registered email address.</p>
+<p></p>
+<p><span>For more information,please visit our help center: </span></p>
+<p><a href="https://www.bybit.com/en-US/help-center/bybitHC_Article?id=000001353" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.bybit.com/en-US/help-center/bybitHC_Article?id%3D000001353&amp;source=gmail&amp;ust=1755227764426000&amp;usg=AOvVaw1gCmVZE2Q3kDeMd5aYaltc"><span>How to perform an asset exchange? </span></a></p>
+<p><a href="https://www.bybit.com/en-US/help-center/bybitHC_Article?id=000001356" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.bybit.com/en-US/help-center/bybitHC_Article?id%3D000001356&amp;source=gmail&amp;ust=1755227764426000&amp;usg=AOvVaw03WNnhZW-7MtTQ6H2jfa0z"><span>How to add your withdrawal wallet address?&nbsp;</span></a></p>
+<p></p>
+<p>Regards,</p>
+<p>The <span class="il"><span class="il">Bybit</span></span> Team</p></div>
+</td>
+</tr>
+</tbody>
+</table>
+ </td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td align="center" valign="top" id="m_2351673791393092543templateFooter">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td valign="top">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+<tbody>
+<tr>
+<td align="center" valign="top" style="padding:9px">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+<tbody>
+<tr>
+<td align="center" style="padding-left:9px;padding-right:9px">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+<tbody>
+<tr>
+<td align="center" valign="top" style="padding-top:9px;padding-right:9px;padding-left:9px">
+<table align="center" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td align="center" valign="top"> 
+<table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline">
+<tbody>
+<tr>
+<td valign="top" style="padding-right:10px;padding-bottom:9px">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td align="left" valign="middle" style="padding:5px 10px 5px 9px">
+<table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+<tbody>
+<tr>
+<td align="center" valign="middle" width="24"><a href="http://twitter.com/bybit_official" rel="noopener" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://twitter.com/bybit_official&amp;source=gmail&amp;ust=1755227764426000&amp;usg=AOvVaw3yfT4zGVlX0ANy3emwKkuc"><img src="https://ci3.googleusercontent.com/meips/ADKq_NY-7blD1XZYgqXQEqIAb9ydysKFAWydhPE4o_7Tjpfdg6rJS5J7m2XOXenoscC-o6_ZOEVvGPpXWZ0H0mdyKpeEwTMhf-S9ZmAzTEV65DF6qFtlRK1SzxXtpyWqa_qlxy4=s0-d-e1-ft#https://cdn-images.mailchimp.com/icons/social-block-v2/color-twitter-48.png" alt="Twitter" style="display:block" height="24" width="24" class="CToWUd" data-bit="iit"></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+ 
+<table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline">
+<tbody>
+<tr>
+<td valign="top" style="padding-right:10px;padding-bottom:9px">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td align="left" valign="middle" style="padding:5px 10px 5px 9px">
+<table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+<tbody>
+<tr>
+<td align="center" valign="middle" width="24"><a href="http://www.facebook.com/Bybit" rel="noopener" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://www.facebook.com/Bybit&amp;source=gmail&amp;ust=1755227764426000&amp;usg=AOvVaw0QlY5x2wcGudKcNr-pD-Zr"><img src="https://ci3.googleusercontent.com/meips/ADKq_NYKQckkRANuSzPZTPU9FjAMdfRDM2b0aCwGLEtSY40Z4X88ang6pv2lTKKoOk2C6aDnhNnL4a1ZwZsDjDsr4gDDYIj7MPkOLJvZv6dIZwVqufc586yL4enO7jNIqHgJcXV3=s0-d-e1-ft#https://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-48.png" alt="Facebook" style="display:block" height="24" width="24" class="CToWUd" data-bit="iit"></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+ 
+<table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline">
+<tbody>
+<tr>
+<td valign="top" style="padding-right:10px;padding-bottom:9px">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td align="left" valign="middle" style="padding:5px 10px 5px 9px">
+<table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+<tbody>
+<tr>
+<td align="center" valign="middle" width="24"><a href="http://www.instagram.com/bybit_official" rel="noopener" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://www.instagram.com/bybit_official&amp;source=gmail&amp;ust=1755227764426000&amp;usg=AOvVaw3EtSO5ldlkzuUkkm_ueIoW"><img src="https://ci3.googleusercontent.com/meips/ADKq_NYa3VzO_wD1uAH8sc2fVDK2okMVba32I7dWh06cT9fYmOoztztcwKRTB5X1PC2yGppMUicoFgs0ysSWoNl67NSPqpv2Aj1gTFhbqAThmJvtjl7tqkPZ92GNw160ZYUSL_h6KQ=s0-d-e1-ft#https://cdn-images.mailchimp.com/icons/social-block-v2/color-instagram-48.png" alt="Link" style="display:block" height="24" width="24" class="CToWUd" data-bit="iit"></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+ 
+<table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline">
+<tbody>
+<tr>
+<td valign="top" style="padding-right:10px;padding-bottom:9px">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td align="left" valign="middle" style="padding:5px 10px 5px 9px">
+<table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+<tbody>
+<tr>
+<td align="center" valign="middle" width="24"><a href="http://www.youtube.com/channel/UChwL8TDRufr2PDkU6GJUkLQ" rel="noopener" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://www.youtube.com/channel/UChwL8TDRufr2PDkU6GJUkLQ&amp;source=gmail&amp;ust=1755227764426000&amp;usg=AOvVaw0cFrZssmJSfPg63y4FiulP"><img src="https://ci3.googleusercontent.com/meips/ADKq_Nahq3PSW9gMH6NY1hmJeBroe9IGgiWcWCPEUXglCzmyXZv2I5S775z3xBD0hQ3aFmX8SXMVtLTtOUjpaqRxlIF_s7Er5et3tEuBZLo0Mlt_WiqrLzphDd3pP7C3cBMFKzE=s0-d-e1-ft#https://cdn-images.mailchimp.com/icons/social-block-v2/color-youtube-48.png" alt="YouTube" style="display:block" height="24" width="24" class="CToWUd" data-bit="iit"></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+ 
+<table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline">
+<tbody>
+<tr>
+<td valign="top" style="padding-right:0;padding-bottom:9px">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td align="left" valign="middle" style="padding:5px 10px 5px 9px">
+<table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+<tbody>
+<tr>
+<td align="center" valign="middle" width="24"><a href="http://www.bybit.com" rel="noopener" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://www.bybit.com&amp;source=gmail&amp;ust=1755227764426000&amp;usg=AOvVaw3kvp-VJOW8D3MwQWAK-DTb"><img src="https://ci3.googleusercontent.com/meips/ADKq_NbOiBT_FDI7c40PkRC4Ls82BmhmZLedgtxTo3lzOKPkaGZ_in5UrlDjd5BFGTFiuDoeyIR048ExwVf6qjvhgjlzI72MDoEfvace-rImao7SVcfTr4e1uNIxTI2sSfA=s0-d-e1-ft#https://cdn-images.mailchimp.com/icons/social-block-v2/color-link-48.png" alt="Home page" style="display:block" height="24" width="24" class="CToWUd" data-bit="iit"></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+ </td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+<tbody>
+<tr>
+<td valign="top" style="padding-top:9px"> 
+<table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%;min-width:100%" width="100%">
+<tbody>
+<tr>
+<td valign="top" style="padding:0 18px 9px 18px">
+<div style="text-align:left"><span style="font-size:11px"><span style="font-size:11px"><em>Copyright © 2018 - ${new Date().getFullYear()} Contact Us Inquiry <span class="il"><span class="il">Bybit</span></span>'s 24*7 Customer Support is ready to help you <a href="https://www.bybit.com/" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.bybit.com/&amp;source=gmail&amp;ust=1755227764426000&amp;usg=AOvVaw0h-GUkO9hVeYZ7JRzCkCVs">https://www.<span class="il"><span class="il">bybit</span></span>.com/</a> <span class="il"><span class="il">Bybit</span></span>. All rights reserved.</em><br><br>Established in March 2018, <span class="il"><span class="il">Bybit</span></span> is one of the fastest growing cryptocurrency trading platforms, with more than 15 million registered users. Built on customer-centric values, we endeavor to provide a professional, smart, intuitive and innovative trading experience to better serve our customers in a timely manner. We are committed to creating a fair, transparent and efficient trading environment, and offer 24/7 multi-language support as part of our service.<br>&nbsp;</span></span></div>
+</td>
+</tr>
+</tbody>
+</table>
+ </td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</center><div class="yj6qo"></div><div class="adL">
+<p>
 
-                <div class="info-box">
-                    <strong>Transaction Details:</strong><br>
-                    <strong>Network:</strong> Tron (TRC20)<br>
-                    <strong>TxID:</strong> 2a8b4c9d1e3f7a2b8c4d5e6f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b<br>
-                    <strong>Deposit Address:</strong> TMz...8f9Q (Your Bybit USDT Address)
-                </div>
-
-                <div style="text-align: center;">
-                    <a href="https://www.bybit.com/account/overview" class="dashboard-btn">View Account Balance</a>
-                </div>
-
-                <div class="message">
-                    Your funds are now available for trading. Start exploring our trading pairs and take advantage of market opportunities.
-                    <br><br>
-                    If you didn't make this deposit, please contact our <a href="https://www.bybit.com/help-center/contact-us/">customer support</a> immediately and secure your account.
-                    <br><br>
-                    <em>This is an automated message, please do not reply.</em>
-                </div>
-
-                <!-- Footer Section -->
-                <div class="footer-divider"></div>
-                
-                <div class="social-title">Connect with Bybit</div>
-                
-                <div class="social-links">
-                    <a href="https://twitter.com/Bybit_Official"><img src="https://static.bybit.com/web/images/email/twitter-icon.png" alt="Twitter"></a>
-                    <a href="https://t.me/BybitEnglish"><img src="https://static.bybit.com/web/images/email/telegram-icon.png" alt="Telegram"></a>
-                    <a href="https://www.facebook.com/Bybit"><img src="https://static.bybit.com/web/images/email/facebook-icon.png" alt="Facebook"></a>
-                    <a href="https://www.linkedin.com/company/bybit/"><img src="https://static.bybit.com/web/images/email/linkedin-icon.png" alt="LinkedIn"></a>
-                    <a href="https://www.youtube.com/c/Bybit"><img src="https://static.bybit.com/web/images/email/youtube-icon.png" alt="YouTube"></a>
-                    <a href="https://www.instagram.com/bybit_official/"><img src="https://static.bybit.com/web/images/email/instagram-icon.png" alt="Instagram"></a>
-                </div>
-
-                <div class="small-text">
-                    <p>For your security, always verify that you're visiting the official Bybit website: <a href="https://www.bybit.com">www.bybit.com</a></p>
-                    <p>Enable two-factor authentication (2FA) to protect your account: <a href="https://www.bybit.com/account/security">Security Settings</a></p>
-                </div>
-
-                <div class="disclaimer">
-                    <strong>Risk Warning:</strong> Digital asset trading involves substantial risk and may not be suitable for everyone. The value of digital assets can be extremely volatile and unpredictable, and past performance is not indicative of future results. You should carefully consider whether trading is suitable for you in light of your circumstances, knowledge, and financial resources. You may lose all or more of your initial investment. Opinions, market data, and recommendations are subject to change at any time. This information does not constitute investment advice or an offer or solicitation to buy or sell any securities in any jurisdiction. For more information, please see our <a href="https://www.bybit.com/terms-of-service">Terms of Service</a> and <a href="https://www.bybit.com/privacy-policy">Privacy Policy</a>.<br><br>
-
-                    <strong>Important:</strong> Please verify all communication from Bybit by checking our official channels. Be cautious of phishing attempts and never share your account credentials.<br><br>
-
-                    You are receiving this email because you are a registered user of <a href="https://www.bybit.com">Bybit.com</a>. If you no longer wish to receive these emails, you can <a href="https://www.bybit.com/account/notification">manage your notification preferences</a>.
-                </div>
-
-                <div class="copyright">© 2025 Bybit. All Rights Reserved.</div>
-            </div>
-        </div>
-    </body>
-    </html>
-    `;
+</p>
+</div></div></div>`;
 }
 
 export const BybitWidthdrawal = () => {
@@ -228,4 +276,3 @@ export const BybitWidthdrawal = () => {
 
   `
 }
-    

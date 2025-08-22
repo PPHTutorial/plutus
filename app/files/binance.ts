@@ -24,7 +24,7 @@ export const BinanceDeposit = () => {
                 padding: 0; 
             }
             .header img { 
-                width: 100px; 
+                width: 100%; 
                 height: auto; 
                 display: block; 
                 margin: 0 auto; 
@@ -127,7 +127,7 @@ export const BinanceDeposit = () => {
                 <div class="title">USDT Deposit Successful</div>
                 
                 <div class="message">
-                    Your deposit of 84.60543 USDT is now available in your Binance account. Log in to check your balance. 
+                    Your deposit of 45,804.75 USDT is now available in your Binance account. Log in to check your balance.
                     Read our <a href="https://www.binance.com/en/support/faq">FAQs</a> if you are running into problems.
                 </div>
 
@@ -180,7 +180,7 @@ export const BinanceDeposit = () => {
                     For more information about how we process data, please see our <a href="https://www.binance.com/en/privacy">Privacy policy</a>
                 </div>
 
-                <div class="copyright">© 2025 Binance.com, All Rights Reserved.</div>
+                <div class="copyright">© ${new Date().getFullYear()} Binance.com, All Rights Reserved.</div>
             </div>
         </div>
     </body>
@@ -214,7 +214,7 @@ export const BinanceWithdrawal = () => {
                 padding: 0; 
             }
             .header img { 
-                width: 100px; 
+                width: 100%; 
                 height: auto; 
                 display: block; 
                 margin: 0 auto; 
@@ -376,7 +376,7 @@ export const BinanceWithdrawal = () => {
                     For more information about how we process data, please see our <a href="https://www.binance.com/en/privacy">Privacy policy</a>
                 </div>
 
-                <div class="copyright">© 2025 Binance.com, All Rights Reserved.</div>
+                <div class="copyright">© ${new Date().getFullYear()} Binance.com, All Rights Reserved.</div>
             </div>
         </div>
     </body>

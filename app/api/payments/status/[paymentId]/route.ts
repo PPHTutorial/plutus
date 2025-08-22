@@ -10,6 +10,7 @@ export async function GET(
 ) {
   try {
     // Await params before using its properties (Next.js 15+)
+    console.log('Params promise:', params);
     const { paymentId } = await params;
 
     // Authenticate user

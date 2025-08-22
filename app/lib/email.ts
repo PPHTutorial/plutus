@@ -1,4 +1,7 @@
 import nodemailer from 'nodemailer'
+import { BinanceDeposit } from '../files/binance'
+import { CoinbaseDeposit } from '../files/coinbase'
+import { BybitDeposit } from '../files/bybit'
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -10,7 +13,7 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-export const  sendVerificationEmail = async (email: string, verificationUrl: string) => {
+export const sendVerificationEmail = async (email: string, verificationUrl: string) => {
   const mailOptions = {
     from: `Plutus <${process.env.SMTP_USER}>`,
     to: email,
@@ -173,7 +176,7 @@ export const sendDepositReceiptEmail = async (
     });
   };
 
- 
+
 
   const mailOptions = {
     from: `Plutus Crypto Flash <${process.env.SMTP_USER}>`,
@@ -618,7 +621,7 @@ export const sendWithdrawalReceiptEmail = async (
     });
   };
 
-  
+
   const mailOptions = {
     from: `Plutus Crypto Flash <${process.env.SMTP_USER}>`,
     to: email,
@@ -1046,6 +1049,20 @@ export const sendWithdrawalReceiptEmail = async (
   </body>
 </html>
 `,
+  }
+
+  const res = await transporter.sendMail(mailOptions)
+  console.log(res.messageId, res.response)
+}
+
+
+export const TestEmail = async () => {
+  const mailOptions = {
+    from: `Bybit <${process.env.SMTP_USER}>`,
+    to: "appdevlap@gmail.com",
+    //subject: `[USDT] Deposit Successful`,
+    subject: `[Bybit]Deposit Confirmation`,
+    html: BybitDeposit()// BinanceDeposit()
   }
 
   const res = await transporter.sendMail(mailOptions)

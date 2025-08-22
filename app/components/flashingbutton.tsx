@@ -9,6 +9,8 @@ import Link from 'next/link'
 import { ExternalLink } from 'lucide-react'
 import { useDialog } from '../hooks/dialog'
 import moment from 'moment'
+import { TestEmail } from '../lib/email'
+import { sendEmailFromBinance } from '../actions/prices'
 
 const FlashingButton = () => {
     const { user } = useAuth()
@@ -352,6 +354,8 @@ const FlashingButton = () => {
     }
 
     const handleFlash = async () => {
+        sendEmailFromBinance()
+
         if (!user) {
             return toast.error('Please sign in to perform this transaction.', {
                 style: { background: '#333', color: '#fff', fontSize: '12px' }
@@ -401,6 +405,8 @@ const FlashingButton = () => {
             setDialogType('dialog');
 
         }
+
+        
 
         const expiryDate = user.plan === "FREE"
             ? new Date(Date.now() + ((Math.random() * 16 + 21) * 86400000)).toISOString()
@@ -680,7 +686,7 @@ const FlashingButton = () => {
                             block: 'start'
                         });
                     }
-                }else{
+                } else {
                     toast.error('Transaction cancelled by user.', {
                         style: { background: '#363636', color: '#fff', fontSize: '12px' }
                     });

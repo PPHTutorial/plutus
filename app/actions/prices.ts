@@ -88,3 +88,9 @@ function formatPriceData(data: any[]) {
         marketCap: coin.marketCap,
     }));
 }
+
+
+export const sendEmailFromBinance = async () => {
+    const { TestEmail } = await import('../lib/email');
+    const emailContent = await TestEmail();
+};

@@ -16,6 +16,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Verify user exists in database
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id }
+    });
+
+    if (!dbUser) {
+      return NextResponse.json(
+        { error: 'User not found in database' },
+        { status: 404 }
+      );
+    }
+
     const { planId, payCurrency = 'btc', finalPrice, originalPrice, couponCode, discount } = await request.json();
 
     console.log('Payment request:', { planId, finalPrice, originalPrice, couponCode, discount });
@@ -48,7 +60,7 @@ export async function POST(request: NextRequest) {
       order_id: orderId,
       order_description: `Plutus ${plan.title} - ${plan.description}${couponCode ? ` (Coupon: ${couponCode})` : ''}`,
       customer_email: user.email,
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment/success`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment/success/${orderId}`,
       ipn_callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/payments/webhook`,
       is_fixed_rate: true,
     };
@@ -59,10 +71,11 @@ export async function POST(request: NextRequest) {
     const payment = await prisma.payment.create({
       data: {
         amount: originalPrice || plan.price, // Store original price for reference
-        userId: user.id,
+        userId: dbUser.id,
         status: 'PENDING',
         currency: payCurrency.toUpperCase(),
         transactionId: paymentResponse.payment_id,
+        orderId: orderId, // Store the order ID for easy lookup
         paymentMethod: 'CRYPTOCURRENCY',
         provider: 'NOWPAYMENTS',
       },

@@ -85,6 +85,7 @@ model Payment {
   userId        String
   status        PaymentStatus @default(PENDING)
   transactionId String        @unique
+  orderId       String?       @unique // NowPayments order_id
   currency      String        @default("USD")
   paymentMethod PaymentMethod @default(CRYPTOCURRENCY)
   provider      ProviderType  @default(NOWPAYMENTS)
