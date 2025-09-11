@@ -85,7 +85,7 @@ export default function ReferralStats({ userId }: ReferralStatsProps) {
 
   if (loading) {
     return (
-      <div className="mb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="mb-12 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[...Array(4)].map((_, index) => (
           <div key={index} className="p-6 bg-gray-900/50 rounded-lg border border-gray-800/50 animate-pulse">
             <div className="h-8 w-8 bg-gray-700 rounded mb-4"></div>
@@ -168,7 +168,7 @@ export default function ReferralStats({ userId }: ReferralStatsProps) {
       </div>
 
       {/* Additional Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="p-6 bg-gray-900/50 rounded-lg border border-gray-800/50">
           <h3 className="text-lg font-semibold text-white mb-4">
             Performance Overview

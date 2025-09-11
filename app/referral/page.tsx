@@ -168,7 +168,7 @@ export default function ReferralPage() {
                     <h2 className="text-2xl font-bold text-white mb-8 text-center">
                         Referral Tiers & Rewards
                     </h2>
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {referralTiers.map((tier, index) => (
                             <div
                                 key={index}
