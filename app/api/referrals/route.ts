@@ -52,17 +52,18 @@ export async function POST(request: NextRequest) {
         const totalEarnings = referralStats.reduce((sum: number, sponsorship: any) => sum + sponsorship.sponsoredAmount, 0)
 
         // Base URL for referral links
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://plutus.uno'
+        const baseUrl = 'https://plutus.uno'
         const referralUrl = `${baseUrl}/?ref=${referralCode}`
 
         // Generate platform-specific sharing URLs
+        const sharingMessage = "Flash your favorite crypto (BTC, USDT, ETH, LTC, SOL, BNB, etc), with Plutus Crypto Flasher. Join now and get a whooping welcome bonus of $50 instantly and other exciting offers."
         const sharingUrls = {
-            twitter: `https://twitter.com/intent/tweet?text=Join%20me%20on%20CryptoFlash%20and%20start%20earning%20crypto!&url=${encodeURIComponent(referralUrl)}&source=twitter`,
-            facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}&source=facebook`,
-            telegram: `https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=Join%20me%20on%20CryptoFlash%20and%20start%20earning%20crypto!&source=telegram`,
-            whatsapp: `https://wa.me/?text=Join%20me%20on%20CryptoFlash%20and%20start%20earning%20crypto!%20${referralUrl}&source=whatsapp`,
-            instagram: `https://www.instagram.com/?text=Join%20me%20on%20CryptoFlash%20and%20start%20earning%20crypto!%20&url=${encodeURIComponent(referralUrl)}&source=instagram`,
-            email: `mailto:?subject=Join%20me%20on%20CryptoFlash&body=Hey!%20I%20wanted%20to%20share%20this%20awesome%20crypto%20platform%20with%20you.%20Join%20using%20my%20referral%20link:%20${referralUrl}`
+            twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(sharingMessage)}&url=${encodeURIComponent(referralUrl)}&source=twitter`,
+            facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}&quote=${encodeURIComponent(sharingMessage)}&source=facebook`,
+            telegram: `https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodeURIComponent(sharingMessage)}&source=telegram`,
+            whatsapp: `https://wa.me/?text=${encodeURIComponent(`${sharingMessage}${referralUrl}`)}&source=whatsapp`,
+            instagram: `https://www.instagram.com/share?text=${encodeURIComponent(sharingMessage)}&url=${encodeURIComponent(referralUrl)}&source=instagram`,
+            email: `mailto:?subject=${encodeURIComponent("Flash your favorite crypto with Plutus Crypto Flasher")}&body=${encodeURIComponent(`Hey! ${sharingMessage} Join using my referral link: ${referralUrl}`)}`
         }
 
         const response = {

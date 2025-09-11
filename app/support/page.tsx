@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import { 
-  ChatBubbleLeftRightIcon, 
-  EnvelopeIcon, 
+import {
+  ChatBubbleLeftRightIcon,
+  EnvelopeIcon,
   PhoneIcon,
   DocumentTextIcon,
   QuestionMarkCircleIcon,
@@ -50,7 +50,7 @@ export default function SupportPage() {
   return (
     <div className="min-h-screen bg-black">
       <Header />
-      
+
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header Section */}
         <div className="text-center mb-12">
@@ -58,7 +58,7 @@ export default function SupportPage() {
             Support Center
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Get help with your Plutus account, transactions, and technical issues. 
+            Get help with your Plutus account, transactions, and technical issues.
             Our team is here to assist you 24/7.
           </p>
         </div>
@@ -66,14 +66,16 @@ export default function SupportPage() {
         {/* Emergency Notice */}
         <div className="mb-8 p-4 bg-red-900/20 border border-red-800/30 rounded-lg">
           <div className="flex items-center">
-            <ExclamationTriangleIcon className="h-6 w-6 text-red-400 mr-3" />
+            <div className="w-8">
+              <ExclamationTriangleIcon className="h-6 w-6 text-red-400 mr-3" />
+            </div>
             <div>
               <h3 className="text-lg font-semibold text-red-400">Emergency Support</h3>
               <p className="text-red-300 text-sm">
-                For urgent issues like failed payments or account security concerns, 
-                contact us immediately via Telegram: 
-                <a 
-                  href="https://t.me/GXWitcher" 
+                For urgent issues like failed payments or account security concerns,
+                contact us immediately via Telegram:
+                <a
+                  href="https://t.me/GXWitcher"
                   className="underline ml-1 hover:text-red-200"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -86,7 +88,7 @@ export default function SupportPage() {
         </div>
 
         {/* Support Options Grid */}
-        <div className="flex justify-center gap-6 mb-12">
+        <div className="flex flex-col lg:flex-row justify-center gap-6 mb-12">
           {supportOptions.map((option, index) => {
             const IconComponent = option.icon
             const priorityColors = {
@@ -94,13 +96,13 @@ export default function SupportPage() {
               medium: 'border-yellow-500/30 bg-yellow-900/10',
               low: 'border-green-500/30 bg-green-900/10'
             }
-            
+
             const Component = option.href ? 'a' : 'button'
-            const props = option.href 
+            const props = option.href
               ? { href: option.href, target: '_blank', rel: 'noopener noreferrer' }
               : option.action
-              ? { onClick: () => window.location.href = option.action! }
-              : {}
+                ? { onClick: () => window.location.href = option.action! }
+                : {}
 
             return (
               <Component
@@ -120,11 +122,10 @@ export default function SupportPage() {
                       {option.description}
                     </p>
                     <div className="mt-3">
-                      <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
-                        option.priority === 'high' ? 'bg-red-500/20 text-red-400' :
-                        option.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-green-500/20 text-green-400'
-                      }`}>
+                      <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${option.priority === 'high' ? 'bg-red-500/20 text-red-400' :
+                          option.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                            'bg-green-500/20 text-green-400'
+                        }`}>
                         {option.priority.charAt(0).toUpperCase() + option.priority.slice(1)} Priority
                       </span>
                     </div>
@@ -133,7 +134,7 @@ export default function SupportPage() {
               </Component>
             )
           })}
-        </div>                
+        </div>
       </main>
     </div>
   )
