@@ -2,7 +2,6 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/app/lib/prisma'
 import { verifyToken } from '@/app/lib/auth'
-import { setAuthCookie } from '@/app/utils/jwt'
 
 export async function POST(request: Request) {
   try {

@@ -5,6 +5,7 @@ import { pricingPlans, PricingPlan } from '@/app/data/pricing-plans';
 import { CheckIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '@/app/hooks/AuthContext';
 import toast from 'react-hot-toast';
+import BalanceDisplay from './BalanceDisplay';
 
 interface PricingProps {
   onSelectPlan?: (plan: PricingPlan) => void;
@@ -40,11 +41,6 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
 
     // Get applied coupon for this plan
     const appliedCoupon = appliedCoupons[plan.id];
-    const finalPrice = appliedCoupon
-      ? plan.price * (1 - appliedCoupon.discount)
-      : plan.price;
-
-
 
     try {
       const response = await fetch('/api/payments/create', {
@@ -55,10 +51,7 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
         body: JSON.stringify({
           planId: plan.id,
           payCurrency: selectedCurrency,
-          originalPrice: plan.price,
-          finalPrice: finalPrice,
           couponCode: appliedCoupon?.code || null,
-          discount: appliedCoupon?.discount || 0,
         }),
       });
 
@@ -72,9 +65,13 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
       localStorage.setItem('currentPayment', JSON.stringify({
         paymentId: data.payment.paymentId,
         planId: plan.id,
-        originalPrice: plan.price,
-        finalPrice: finalPrice,
-        couponCode: appliedCoupon?.code || null,
+        originalPrice: data.payment.originalPrice,
+        finalPrice: data.payment.finalPrice,
+        couponCode: data.payment.couponCode,
+        couponDiscount: data.payment.couponDiscount,
+        balanceDeduction: data.payment.balanceDeduction,
+        requiresPayment: data.payment.requiresPayment,
+        userBalanceAfter: data.payment.userBalanceAfter,
       }));
 
       // Call the onSelectPlan callback if provided
@@ -82,16 +79,34 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
         onSelectPlan(plan);
       }
 
-      // Show payment details in a modal or redirect to payment page
-      toast.success('Server access activated! Complete payment to activate.', {
-        style: {
-          background: '#333',
-          color: '#fff',
-        }
-      });
+      // Show appropriate success message based on payment scenario
+      if (!data.payment.requiresPayment) {
+        toast.success('Plan activated! Payment fully covered by balance and/or coupon.', {
+          style: {
+            background: '#333',
+            color: '#fff',
+          }
+        });
+        
+        // Redirect to dashboard or refresh page
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
+      } else {
+        toast.success(`Payment setup complete! Pay $${data.payment.finalPrice} to activate your plan.`, {
+          style: {
+            background: '#333',
+            color: '#fff',
+          }
+        });
 
-      // You can redirect to a payment page or show payment details in a modal
-      window.open(data.payment.paymentUrl || '/payment/success');
+        // Open payment window or redirect to payment page
+        if (data.payment.paymentUrl) {
+          window.open(data.payment.paymentUrl);
+        } else {
+          window.open('/payment/success');
+        }
+      }
 
     } catch (error: any) {
       console.error('Error creating payment:', error);
@@ -116,6 +131,11 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
           <p className="mt-4 text-xl text-gray-300">
             Select the perfect server for your crypto flashing operations
           </p>
+        </div>
+
+        {/* User Balance Display */}
+        <div className="mt-8 max-w-md mx-auto">
+          <BalanceDisplay />
         </div>
 
         {/* Currency Selector */}

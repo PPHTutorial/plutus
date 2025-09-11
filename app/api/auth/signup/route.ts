@@ -8,11 +8,12 @@ import { signJWT, setAuthCookie } from '@/app/utils/jwt'
 import { sendVerificationEmail } from '@/app/lib/email'
 import { generateToken } from '@/app/lib/auth'
 import { getLocationData } from '@/app/actions/location'
+import { processReferral } from '@/app/utils/referrals'
 
 export async function POST(request: NextRequest) {
   try {
 
-    const { email, password, username } = await request.json()
+    const { email, password, username, referralCode } = await request.json()
 
     const forwardedFor = request.headers.get('x-forwarded-for')
     const ip = forwardedFor?.split(',')[0] || '8.8.8.8'
@@ -55,6 +56,38 @@ export async function POST(request: NextRequest) {
         location: JSON.stringify(location)
       },
     })
+
+    // Credit $50 deposit to the new user upon signup
+    await prisma.transaction.create({
+      data: {
+        transactionId: `signup_bonus_${Date.now()}`,
+        userId: user.id,
+        type: 'DEPOSIT',
+        amount: 50,
+        currency: 'USD',
+        description: 'Signup bonus deposit',
+        status: 'CONFIRMED'
+      }
+    })
+
+    // Optionally, update user's balance if you track it separately
+    await prisma.balance.create({
+      data: {
+        userId: user.id,
+        amount: 50
+      }
+    })
+
+    // Process referral code if provided
+    if (referralCode) {
+      try {
+        await processReferral(referralCode, user.id)
+        console.log(`Referral processed for user ${user.id} with code ${referralCode}`)
+      } catch (error) {
+        console.error('Failed to process referral:', error)
+        // Don't fail the signup if referral processing fails
+      }
+    }
 
 
 

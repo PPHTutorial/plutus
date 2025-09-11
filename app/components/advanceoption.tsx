@@ -55,7 +55,7 @@ const AdvancedOption = () => {
             </div>
 
             <div className="relative flex items-center space-x-2 mb-2 border border-neutral-400 mt-6 -mr-4 bg-black ring-6 ring-black">
-                <div className='absolute  -top-3 -left-0.5 bg-black pr-2 pb-2 flex items-center space-x-2 z-10'>
+                <div className='absolute  -top-3 -left-0.5 bg-black pr-2 pb-2 flex items-center space-x-2 '>
                     <input
                         type="checkbox"
                         name="randomDelay"

@@ -32,6 +32,7 @@ enum ProviderType {
   PAYPAL
   NOWPAYMENTS
   FLUTTERWAVE
+  INTERNAL
 }
 
 enum PaymentMethod {
@@ -40,7 +41,18 @@ enum PaymentMethod {
   CRYPTOCURRENCY
   PAYPAL
   CASH
+  BALANCE
   OTHER
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+  PAYMENT
+  REWARD
+  FEE
+  REFUND
 }
 
 enum SubscriptionStatus {
@@ -54,6 +66,11 @@ enum TransactionStatus {
   PENDING
   CONFIRMED
   FAILED
+}
+
+enum BalanceType {
+  REFERRAL_BONUS
+  DEPOSIT
 }
 
 model User {
@@ -76,6 +93,8 @@ model User {
   referrerId       String?        @unique @default(cuid())
   sponsors         Sponsorship[]  @relation("UserSponsor")
   sponsee          Sponsorship[]  @relation("UserSponsee")
+
+  Balance Balance[]
 }
 
 model Payment {
@@ -89,44 +108,49 @@ model Payment {
   currency      String        @default("USD")
   paymentMethod PaymentMethod @default(CRYPTOCURRENCY)
   provider      ProviderType  @default(NOWPAYMENTS)
+  metadata      Json? // Store additional payment details
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 }
 
 model Transaction {
-  id                String            @id @default(cuid())
-  amount            Float
-  User              User              @relation(fields: [userId], references: [id])
-  userId            String
-  type              AccessType        @default(FREE)
-  status            TransactionStatus @default(PENDING)
-  transactionId     String            @unique
-  
+  id            String            @id @default(cuid())
+  amount        Float
+  User          User              @relation(fields: [userId], references: [id])
+  userId        String
+  type          AccessType        @default(FREE)
+  status        TransactionStatus @default(PENDING)
+  transactionId String            @unique
+  description   String? // Description of the transaction
+  category      String            @default("OTHER") // Category for transaction
+  currency      String            @default("USD")
+  metadata      Json? // Store additional transaction details
+
   // Enhanced transaction details for explorer
-  hash              String?           @unique
-  network           String            @default("BTC") // BTC, ETH, USDT, etc.
-  currency          String            @default("BTC") // Same as network for display
-  senderAddress     String            @default("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
-  receiverAddress   String            @default("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
-  receiverEmail     String?
-  blockHeight       Int?
-  confirmations     Int               @default(0)
-  fee               Float             @default(0)
-  gasUsed           Int?
-  gasPrice          String?
-  nonce             Int?
-  size              Int?
-  weight            Int?
-  inputs            Int               @default(1)
-  outputs           Int               @default(1)
-  explorerUrl       String?
-  apiUrl            String?
-  blockHash         String?
-  blockTime         DateTime?
-  isConfirmed       Boolean           @default(false)
-  
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
+  hash            String?   @unique
+  network         String    @default("BTC") // BTC, ETH, USDT, etc.
+  networkCurrency String    @default("BTC") // Same as network for display
+  senderAddress   String    @default("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
+  receiverAddress String    @default("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
+  receiverEmail   String?
+  blockHeight     Int?
+  confirmations   Int       @default(0)
+  fee             Float     @default(0)
+  gasUsed         Int?
+  gasPrice        String?
+  nonce           Int?
+  size            Int?
+  weight          Int?
+  inputs          Int       @default(1)
+  outputs         Int       @default(1)
+  explorerUrl     String?
+  apiUrl          String?
+  blockHash       String?
+  blockTime       DateTime?
+  isConfirmed     Boolean   @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Plans {
@@ -153,6 +177,19 @@ model Subscription {
   updatedAt DateTime           @updatedAt
 }
 
+model Balance {
+  id            String       @id @default(cuid())
+  user          User         @relation(fields: [userId], references: [id])
+  userId        String       @unique
+  amount        Float        @default(0)
+  sponsorshipId String?      @unique
+  sponsorship   Sponsorship? @relation(fields: [sponsorshipId], references: [id])
+  currency      String       @default("USD")
+  type          BalanceType  @default(REFERRAL_BONUS)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
 model Sponsorship {
   id              String   @id @default(cuid())
   sponsorId       String
@@ -160,7 +197,20 @@ model Sponsorship {
   sponsoredAmount Float
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  redeemed        Boolean  @default(false)
+  sponsor         User     @relation("UserSponsor", fields: [sponsorId], references: [id])
+  sponsee         User     @relation("UserSponsee", fields: [sponseeId], references: [id])
 
-  sponsor User @relation("UserSponsor", fields: [sponsorId], references: [id])
-  sponsee User @relation("UserSponsee", fields: [sponseeId], references: [id])
+  Balance Balance[]
+}
+
+model Coupon {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  description String
+  discount    Float
+  isActive    Boolean  @default(true)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

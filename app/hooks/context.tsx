@@ -59,7 +59,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
                     setMultiTransactions(data);
                     setLiveTransactions(data);
                     if (isPolling) {
-                        pollingInterval = setTimeout(pollCryptoData, 30000); 
+                        pollingInterval = setTimeout(pollCryptoData, 30000);
                     }
                 } else {
                     console.log("No crypto data received, retrying...");
@@ -72,7 +72,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
                 setIsOnline(false);
 
                 if (isPolling) {
-                    pollingInterval = setTimeout(pollCryptoData, 10000); 
+                    pollingInterval = setTimeout(pollCryptoData, 10000);
                 }
             }
         };
@@ -97,23 +97,31 @@ export function ContentProvider({ children }: { children: ReactNode }) {
             if (randomTx) {
                 // Add fake user data to make it look like real user transactions
                 const fakeUsers = [
-                    'CryptoKing92', 'BlockchainBoss', 'SatoshiFan', 'EthereumExplorer', 'BitcoinBull',
-                    'CoinMaster', 'TradeGuru', 'CryptoNinja', 'DigitalGold', 'BlockchainPro',
-                    'CoinCollector', 'CryptoWhale', 'TokenTrader', 'HashHunter', 'ChainChaser',
-                    'BitMiner2024', 'CryptoSamurai', 'DigitalDollar', 'BlockBuster', 'CoinCrusher',
-                    'EthMaster', 'BTCLegend', 'AltcoinAce', 'DeFiDemon', 'NFTNomad',
-                    'CryptoPhoenix', 'BitWizard', 'TokenTitan', 'ChainLord', 'CoinConqueror',
-                    'CryptoViper', 'BitHawk', 'TokenTiger', 'ChainWolf', 'CoinEagle',
-                    'CryptoLion', 'BitShark', 'TokenPanther', 'ChainFox', 'CoinBear',
-                    'CryptoRaven', 'BitFalcon', 'TokenCobra', 'ChainLynx', 'CoinJaguar',
-                    'CryptoStorm', 'BitThunder', 'TokenLightning', 'ChainBlaze', 'CoinFlash',
-                    'CryptoGhost', 'BitShadow', 'TokenPhantom', 'ChainSpirit', 'CoinSpectre',
-                    'CryptoKnight', 'BitWarrior', 'TokenGuardian', 'ChainDefender', 'CoinProtector',
-                    'CryptoRocket', 'BitMeteor', 'TokenComet', 'ChainStar', 'CoinGalaxy',
-                    'CryptoElite', 'BitChampion', 'TokenHero', 'ChainLegend', 'CoinMythic',
-                    'QuantumTrader', 'DigitalNomad', 'BlockMagnet', 'CoinVortex', 'CryptoNebula',
-                    'BitStorm99', 'TokenVault', 'ChainRider', 'CoinHunter', 'CryptoSaber',
-                    'BitForge', 'TokenAlpha', 'ChainBeta', 'CoinGamma', 'CryptoDelta'
+                    'cryptoking92', 'blockchainBOSS', 'Satoshifan', 'ethereumexplorer', 'BITCOINbull',
+                    'coinmaster', 'TradeGuru', 'cryptoninja', 'DigitalGold', 'blockchainpro',
+                    'coinCOLLECTOR', 'CryptoWhale', 'tokentrader', 'HASHhunter', 'chainCHASER',
+                    'bitminer2024', 'cryptoSamurai', 'digitaldollar', 'BlockBuster', 'coinCRUSHER',
+                    'ETHmaster', 'btcLEGEND', 'altcoinAce', 'defiDEMON', 'nftNomad',
+                    'cryptoPhoenix', 'Bitwizard', 'tokenTITAN', 'chainLORD', 'coinConqueror',
+                    'cryptoviper', 'bithawk', 'TokenTiger', 'chainwolf', 'COINEagle',
+                    'cryptolion', 'bitSHARK', 'tokenPanther', 'ChainFox', 'coinBEAR',
+                    'cryptoraven', 'bitFalcon', 'tokenCOBRA', 'chainLYNX', 'coinJaguar',
+                    'cryptoSTORM', 'bitThunder', 'tokenlightning', 'ChainBlaze', 'coinFLASH',
+                    'cryptoghost', 'bitSHADOW', 'TokenPhantom', 'chainSPIRIT', 'coinSpectre',
+                    'cryptoKNIGHT', 'bitwarrior', 'tokenGUARDIAN', 'ChainDefender', 'coinprotector',
+                    'cryptorocket', 'BitMeteor', 'tokenCOMET', 'chainStar', 'coingalaxy',
+                    'cryptoELITE', 'bitchampion', 'TokenHero', 'chainLEGEND', 'coinMYTHIC',
+                    'quantumTRADER', 'digitalNomad', 'blockMAGNET', 'coinVORTEX', 'cryptoNebula',
+                    'bitstorm99', 'tokenVAULT', 'chainRider', 'coinHUNTER', 'cryptoSaber',
+                    'bitFORGE', 'tokenAlpha', 'chainBETA', 'coinGamma', 'cryptoDELTA', "Alex Carter",
+                    "Sophie Nguyen", "Liam.Patel", "Mia.Chen", "Noah_Kim",
+                    "Olivia Smith", "Lucas Johnson", "Emma Garcia", "EthanLee", "Ava Brown",
+                    "Mason Davis", "Isabella Wilson", "Logan Martinez", "Charlotte Anderson", "ElijahThomas",
+                    "Amelia Taylor", "Benjamin Moore", "Harper Jackson", "James White", "Evelyn78Harris",
+                    "crypto_jake", "blockchain.sarah", "satoshi.sam", "eth.megan", "btc_mike",
+                    "lucas_the_trader", "emma_invests", "noah.crypto", "ava.blockchain", "liam.web3",
+                    "sophie.eth", "alex_btc", "mia.nft", "logan_defi", "olivia.chain",
+                    "benjamin.miner", "charlotte.wallet", "harper_token", "james_validator", "evelyn_node"
                 ];
                 const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
 

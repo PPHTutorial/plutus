@@ -17,6 +17,7 @@ export interface UserJwtPayload {
     emailVerified: boolean
     location: string;
     plan: string
+    referrerId?: string;
 }
 
 export async function signJWT(payload: {
@@ -28,6 +29,7 @@ export async function signJWT(payload: {
     emailVerified: boolean
     location?: string;
     plan?: string;
+    referrerId?: string;
 }): Promise<string> {
     const token = await new SignJWT({
         ip: payload.ip,
@@ -37,7 +39,8 @@ export async function signJWT(payload: {
         username: payload.username,
         emailVerified: payload.emailVerified,
         location: payload.location,
-        plan: payload.plan
+        plan: payload.plan,
+        referrerId: payload.referrerId
     })
         .setProtectedHeader({ alg: 'HS256' })
         .setSubject(payload.id)
@@ -78,7 +81,9 @@ export async function authMiddleware(request: NextRequest) {
         username: payload.username,
         emailVerified: payload.emailVerified,
         location: payload.location,
-        plan: payload.plan
+        plan: payload.plan,
+        token,
+        referrerId: payload.referrerId
     };
 }
 
@@ -110,7 +115,6 @@ export async function getCurrentUser() {
     const payload = await verifyJWT(token);
     if (!payload) return null;
 
-
     return {
         id: payload.sub,        
         email: payload.email,
@@ -119,7 +123,9 @@ export async function getCurrentUser() {
         role: payload.role,
         emailVerified: payload.emailVerified,
         location: JSON.parse(payload.location),
-        plan: payload.plan
+        plan: payload.plan,
+        token,
+        referrerId:payload.referrerId
     };
 }
 

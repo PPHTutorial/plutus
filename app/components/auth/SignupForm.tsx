@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { redirect, useRouter } from 'next/navigation'
+import { redirect, useRouter, useSearchParams } from 'next/navigation'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { useAuth } from '@/app/hooks/AuthContext'
 import { useAuthDialog } from '@/app/hooks/auth-dialog'
@@ -11,11 +11,13 @@ import { useAuthDialog } from '@/app/hooks/auth-dialog'
 export function SignupForm() {
   const { showSignin } = useAuthDialog()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')
+  const [referralCode, setReferralCode] = useState('')
   const [passwordStrength, setPasswordStrength] = useState({
     length: false,
     lowercase: false,
@@ -28,16 +30,28 @@ export function SignupForm() {
 
   useEffect(() => {
     setPasswordStrength({
-      length: password.length >= 8,
-      lowercase: /[a-z]/.test(password),
-      uppercase: /[A-Z]/.test(password),
-      number: /[0-9]/.test(password),
-      special: /[!@#$%^&*]/.test(password),
+      length: password.length >= 6,
+      lowercase: true,//[a-z]/.test(password),
+      uppercase: true,// /[A-Z]/.test(password),
+      number: true, ////[0-9]/.test(password),
+      special: true, // /[!@#$%^&*]/.test(password),
     })
   }, [password])
 
-  if (user && !user.emailVerified)
-    redirect('/verify-email')
+  useEffect(() => {
+    // Extract referral code from URL
+    if (searchParams) {
+      const ref = searchParams.get('ref')
+      if (ref) {
+        setReferralCode(ref)
+      }
+    }
+  }, [searchParams])
+
+  const isPasswordValid = Object.values(passwordStrength).every(Boolean)
+
+  // if (user && !user.emailVerified)
+  // redirect('/verify-email')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -49,17 +63,24 @@ export function SignupForm() {
     const password = formData.get('password') as string
     const username = formData.get('fullName') as string
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long')
+    if (!isPasswordValid) {
+      setError('Password must meet all strength requirements')
       setIsLoading(false)
       return
     }
 
     try {
+      const requestBody = {
+        email,
+        password,
+        username,
+        ...(referralCode && { referralCode })
+      }
+
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, username }),
+        body: JSON.stringify(requestBody),
       })
 
       const data = await response.json()
@@ -70,6 +91,9 @@ export function SignupForm() {
       }
 
       setSuccess(true)
+      setTimeout(() => {
+        window.location.reload()
+      }, 5000)
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
@@ -82,7 +106,7 @@ export function SignupForm() {
     <div className="max-w-md w-full  bg-transparent rounded-lg p-8">
       <div className="text-center ">
 
-        {!success&&<p className="text-gray-600">
+        {!success && <p className="text-gray-600">
           Or{' '}
           <button onClick={() => showSignin()} className="font-bold text-green-600 hover:text-green-500 transition-colors">
             sign in to your account
@@ -177,7 +201,54 @@ export function SignupForm() {
                 </div>
               </div>
             </div>
-          </div>            <div className="space-y-4">
+
+            {/* Referral Code Display */}
+            {referralCode && (
+              <div className="mt-4 p-3 bg-green-900/20 border border-green-700/50 rounded-lg">
+                <div className="flex items-center space-x-2">
+                  <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                  <p className="text-sm text-green-600">
+                    <span className="font-medium">Referral Code:</span> {referralCode}
+                  </p>
+                </div>
+                <p className="text-xs text-green-700 mt-1">
+                  You&apos;ll receive bonus rewards when you complete your signup!
+                </p>
+              </div>
+            )}
+
+            {/* Password Strength Indicator */}
+            {password && (
+              <div className="mt-4 p-3 bg-gray-900/20 border border-gray-700/50 rounded-lg">
+                <p className="text-sm font-medium text-gray-300 mb-2">Password Requirements:</p>
+                <div className="space-y-1">
+                  <div className={`flex items-center text-xs ${passwordStrength.length ? 'text-green-400' : 'text-gray-500'}`}>
+                    <span className="w-4 h-4 mr-2">{passwordStrength.length ? '✓' : '○'}</span>
+                    At least 8 characters
+                  </div>
+                  <div className={`flex items-center text-xs ${passwordStrength.lowercase ? 'text-green-400' : 'text-gray-500'}`}>
+                    <span className="w-4 h-4 mr-2">{passwordStrength.lowercase ? '✓' : '○'}</span>
+                    One lowercase letter
+                  </div>
+                  <div className={`flex items-center text-xs ${passwordStrength.uppercase ? 'text-green-400' : 'text-gray-500'}`}>
+                    <span className="w-4 h-4 mr-2">{passwordStrength.uppercase ? '✓' : '○'}</span>
+                    One uppercase letter
+                  </div>
+                  <div className={`flex items-center text-xs ${passwordStrength.number ? 'text-green-400' : 'text-gray-500'}`}>
+                    <span className="w-4 h-4 mr-2">{passwordStrength.number ? '✓' : '○'}</span>
+                    One number
+                  </div>
+                  <div className={`flex items-center text-xs ${passwordStrength.special ? 'text-green-400' : 'text-gray-500'}`}>
+                    <span className="w-4 h-4 mr-2">{passwordStrength.special ? '✓' : '○'}</span>
+                    One special character (!@#$%^&*)
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="space-y-4">
             <button
               type="submit"
               disabled={isLoading}

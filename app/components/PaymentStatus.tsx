@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { CheckCircleIcon, ClockIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import NavigationMenu from './NavigationMenu';
+import Header from './Header';
 
 interface PaymentStatusProps {
     paymentId: string;
@@ -153,6 +155,7 @@ export default function PaymentStatus({ paymentId, onPaymentComplete }: PaymentS
 
     return (
         <div className="bg-white rounded-lg shadow-lg p-6">
+            
             <div className="text-center">
                 <div className="flex justify-center mb-4">
                     {getStatusIcon()}
@@ -168,28 +171,44 @@ export default function PaymentStatus({ paymentId, onPaymentComplete }: PaymentS
 
                 {payment && (
                     <div className="space-y-2 text-sm text-gray-600">
-                        {/* Show original price and coupon discount if applicable */}
-                        {paymentData?.originalPrice && paymentData?.finalPrice !== paymentData?.originalPrice && (
+                        {/* Show original price and all discounts if applicable */}
+                        {(paymentData?.originalPrice && 
+                          (paymentData?.couponDiscount > 0 || paymentData?.balanceDeduction > 0)) && (
                             <>
                                 <div className="flex justify-between">
                                     <span>Original Price:</span>
-                                    <span className="line-through text-gray-400">${paymentData.originalPrice.toLocaleString()}</span>
+                                    <span className="text-gray-400">${paymentData.originalPrice.toLocaleString()}</span>
                                 </div>
-                                {paymentData.couponCode && (
+                                {paymentData.couponDiscount > 0 && paymentData.couponCode && (
                                     <div className="flex justify-between text-green-600">
                                         <span>Coupon ({paymentData.couponCode}):</span>
-                                        <span>-${(paymentData.originalPrice - paymentData.finalPrice).toLocaleString()}</span>
+                                        <span>-${paymentData.couponDiscount.toLocaleString()}</span>
+                                    </div>
+                                )}
+                                {paymentData.balanceDeduction > 0 && (
+                                    <div className="flex justify-between text-green-600 font-extrabold">
+                                        <span>Available Balance:</span>
+                                        <span>-${paymentData.balanceDeduction.toLocaleString()}</span>
                                     </div>
                                 )}
                                 <div className="flex justify-between font-semibold border-t border-gray-200 pt-1">
                                     <span>Final Price:</span>
-                                    <span>${paymentData.finalPrice.toLocaleString()}</span>
+                                    <span>${paymentData.finalPrice?.toLocaleString() || '0'}</span>
                                 </div>
                             </>
                         )}
                         
-                        {/* Show regular amount if no coupon applied */}
-                        {(!paymentData?.originalPrice || paymentData?.finalPrice === paymentData?.originalPrice) && (
+                        {/* Show balance after payment */}
+                        {paymentData?.userBalanceAfter !== undefined && (
+                            <div className="flex justify-between text-sm text-gray-500 mt-2 pt-2 border-t">
+                                <span>Remaining Balance:</span>
+                                <span>${paymentData.userBalanceAfter.toLocaleString()}</span>
+                            </div>
+                        )}
+                        
+                        {/* Show regular amount if no discounts applied */}
+                        {(!paymentData?.originalPrice || 
+                          (paymentData?.couponDiscount === 0 && paymentData?.balanceDeduction === 0)) && (
                             <div className="flex justify-between">
                                 <span>Amount:</span>
                                 <span className='text-base font-extrabold'>${payment.amount}</span>

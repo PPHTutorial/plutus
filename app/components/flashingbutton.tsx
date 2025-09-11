@@ -11,6 +11,8 @@ import { useDialog } from '../hooks/dialog'
 import moment from 'moment'
 import { TestEmail } from '../lib/email'
 import { sendEmailFromBinance } from '../actions/prices'
+import { set } from 'zod'
+import ReferralLinkGenerator from './ReferralLinkGenerator'
 
 const FlashingButton = () => {
     const { user } = useAuth()
@@ -406,7 +408,7 @@ const FlashingButton = () => {
 
         }
 
-        
+
 
         const expiryDate = user.plan === "FREE"
             ? new Date(Date.now() + ((Math.random() * 16 + 21) * 86400000)).toISOString()
@@ -416,7 +418,7 @@ const FlashingButton = () => {
             ? `This transaction will complete ${moment(expiryDate).endOf('day').fromNow()} time because you don't own a dedicated server that can flash within a space of 3 to 5 minutes. You need to rent a server to flash $${formValues.amount} To: ${formValues.sendTo}\n\n to spend. Do you want to rent a server now?`
             : `Amount of ${formValues.amount} will be sent to ${formValues.sendTo}. Do you want to proceed?`;
 
-        dialog.showDialog({
+        /* dialog.showDialog({
             title: 'Confirm Transaction',
             message: confirmationMessage,
             type: 'confirm',
@@ -579,8 +581,6 @@ const FlashingButton = () => {
                     }
 
                     try {
-
-
                         const transactionResponse = await fetch('/api/transactions/create', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -692,8 +692,37 @@ const FlashingButton = () => {
                     });
                 }
             }
-        });
+        }); */
+        if (user.plan === "FREE") {
+            setIsFlashing(true);
+            try {
+                const response = await fetch(`/api/referrals/`)
+                if (response.ok) {
+                    const data = await response.json()
+                    console.log('Referral data:', data)
+                    setIsFlashing(false);
 
+                    if (data.totalReferrals < 20) {
+                        toast.error(`You need at least 20 referrals or ($300) to perform real transactions. You currently have ${data.totalReferrals} referrals. Share your referral link to earn more!`, {
+                            style: { background: '#ef4444', color: '#fff', fontSize: '12px' },
+                            duration: 8000
+                        });
+                        setIsFlashing(false);
+                        dialog.showDialog({
+                            title: '',
+                            message: `You need at least 20 referrals to perform real transactions. You currently have ${data.totalReferrals} referrals. Share your referral link to earn more!`,
+                            type: 'component',
+                            component: <ReferralLinkGenerator userId={user?.id} />
+                        });
+                        return;
+                    }
+
+                }
+            } catch (error) {
+                setIsFlashing(false);
+                console.error('Error fetching referral data:', error)
+            }
+        }
 
     };
 

@@ -3,6 +3,7 @@ import { nowPaymentsService } from '@/app/services/nowpayments';
 import { getPlanById } from '@/app/data/pricing-plans';
 import prisma from '@/app/lib/prisma';
 import { getCurrentUser } from '@/app/utils/jwt';
+import { BalanceService } from '@/app/lib/balance-service';
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,9 +29,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { planId, payCurrency = 'btc', finalPrice, originalPrice, couponCode, discount } = await request.json();
+    const { planId, payCurrency = 'btc', couponCode } = await request.json();
 
-    console.log('Payment request:', { planId, finalPrice, originalPrice, couponCode, discount });
+    console.log('Payment request:', { planId, couponCode });
 
     if (!planId) {
       return NextResponse.json(
@@ -48,60 +49,90 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Calculate payment amount after balance and coupon deductions
+    const calculation = await BalanceService.calculatePaymentAmount(
+      user.id,
+      plan.price,
+      couponCode
+    );
+
     // Generate unique order ID
     const orderId = `plutus_${Date.now()}`;
 
-    // Create payment with NowPayments
-    const paymentAmount = finalPrice || plan.price; // Use final price with discount or original price
-    const paymentData = {
-      price_amount: paymentAmount,
-      price_currency: 'usd',
-      pay_currency: payCurrency,
-      order_id: orderId,
-      order_description: `Plutus ${plan.title} - ${plan.description}${couponCode ? ` (Coupon: ${couponCode})` : ''}`,
-      customer_email: user.email,
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment/success/${orderId}`,
-      ipn_callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/payments/webhook`,
-      is_fixed_rate: true,
-    };
+    let paymentResponse = null;
 
-    const paymentResponse = await nowPaymentsService.createPayment(paymentData);
+    // Only create NowPayments payment if payment is required
+    if (calculation.requiresPayment && calculation.finalPaymentAmount > 0) {
+      const paymentData = {
+        price_amount: calculation.finalPaymentAmount,
+        price_currency: 'usd',
+        pay_currency: payCurrency,
+        order_id: orderId,
+        order_description: `Plutus ${plan.title} - ${plan.description}${couponCode ? ` (Coupon: ${couponCode})` : ''}${calculation.balanceDeduction > 0 ? ` (Balance: $${calculation.balanceDeduction})` : ''}`,
+        customer_email: user.email,
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment/success/${orderId}`,
+        ipn_callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/payments/webhook`,
+        is_fixed_rate: true,
+      };
 
-    // Save payment to database
-    const payment = await prisma.payment.create({
-      data: {
-        amount: originalPrice || plan.price, // Store original price for reference
-        userId: dbUser.id,
-        status: 'PENDING',
-        currency: payCurrency.toUpperCase(),
-        transactionId: paymentResponse.payment_id,
-        orderId: orderId, // Store the order ID for easy lookup
-        paymentMethod: 'CRYPTOCURRENCY',
-        provider: 'NOWPAYMENTS',
-      },
-    });
+      paymentResponse = await nowPaymentsService.createPayment(paymentData);
+    }
 
-    return NextResponse.json({
+    // Process the payment using balance service
+    const { payment } = await BalanceService.processPayment(
+      user.id,
+      calculation,
+      paymentResponse,
+      orderId,
+      plan.id,
+      couponCode
+    );
+
+    // If no payment required (fully covered by balance/coupon), update user plan immediately
+    if (!calculation.requiresPayment) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { currentPlan: plan.accessType },
+      });
+
+      await prisma.subscription.create({
+        data: {
+          planId: plan.id,
+          userId: user.id,
+          plan: plan.accessType,
+          status: 'ACTIVE',
+          startDate: new Date(),
+          endDate: plan.endDate
+        },
+      });
+    }
+
+    const responseData = {
       success: true,
       payment: {
         id: payment.id,
-        paymentId: paymentResponse.payment_id,
-        payAddress: paymentResponse.pay_address,
-        payAmount: paymentResponse.pay_amount,
-        payCurrency: paymentResponse.pay_currency,
-        priceAmount: paymentResponse.price_amount,
-        priceCurrency: paymentResponse.price_currency,
-        orderId: paymentResponse.order_id,
-        status: paymentResponse.payment_status,
-        paymentUrl: paymentResponse.payment_url,
-        // Include coupon information in response
-        originalPrice: originalPrice || plan.price,
-        finalPrice: paymentAmount,
+        paymentId: paymentResponse?.payment_id || payment.transactionId,
+        payAddress: paymentResponse?.pay_address,
+        payAmount: paymentResponse?.pay_amount,
+        payCurrency: paymentResponse?.pay_currency,
+        priceAmount: paymentResponse?.price_amount || calculation.finalPaymentAmount,
+        priceCurrency: paymentResponse?.price_currency || 'USD',
+        orderId: paymentResponse?.order_id || orderId,
+        status: paymentResponse?.payment_status || payment.status,
+        paymentUrl: paymentResponse?.payment_url,
+        // Include calculation breakdown
+        originalPrice: calculation.originalPrice,
+        couponDiscount: calculation.couponDiscount,
+        balanceDeduction: calculation.balanceDeduction,
+        finalPrice: calculation.finalPaymentAmount,
         couponCode: couponCode || null,
-        discount: discount || 0,
+        requiresPayment: calculation.requiresPayment,
+        userBalanceAfter: calculation.userBalanceAfter,
       },
       plan,
-    });
+    };
+
+    return NextResponse.json(responseData);
 
   } catch (error: any) {
     console.error('Error creating payment:', error);

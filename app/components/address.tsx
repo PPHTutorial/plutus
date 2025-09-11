@@ -14,7 +14,7 @@ const Address = () => {
     const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target
         //console.log(name, value, type)
-        if (user && user.plan === "FREE") {
+        /* if (user && user.plan === "FREE") {
             toast.error('Only users with dedicated servers can Flash crypto. You need to upgrade your plan to use this feature. You can only test with parameters including our wallet amount and exchange server. Enter your email below and press the \"Broadcast Test Transaction\" below for a mock flash testing', {
                 style: {
                     background: '#333',
@@ -25,7 +25,7 @@ const Address = () => {
                 duration: 5000,
             });
             return;
-        }
+        } */
         if (type === 'checkbox') {
             setFormValues({
                 ...formValues,

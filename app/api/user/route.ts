@@ -7,12 +7,12 @@ export async function GET(request: NextRequest) {
     try {
         // Authenticate user (optional - remove if you want public access)
         const currentUser = await getCurrentUser();
-        
+
         if (!currentUser) {
             return NextResponse.json(
-                { 
-                    success: false, 
-                    error: 'Unauthorized' 
+                {
+                    success: false,
+                    error: 'Unauthorized'
                 },
                 { status: 401 }
             );
@@ -21,9 +21,9 @@ export async function GET(request: NextRequest) {
         // Check if user has admin privileges (optional)
         if (currentUser.role !== 'ADMIN') {
             return NextResponse.json(
-                { 
-                    success: false, 
-                    error: 'Insufficient permissions' 
+                {
+                    success: false,
+                    error: 'Insufficient permissions'
                 },
                 { status: 403 }
             );
@@ -41,18 +41,18 @@ export async function GET(request: NextRequest) {
 
         // Build where clause for filtering
         const where: any = {};
-        
+
         if (search) {
             where.OR = [
                 { username: { contains: search, mode: 'insensitive' } },
                 { email: { contains: search, mode: 'insensitive' } },
             ];
         }
-        
+
         if (role) {
             where.role = role;
         }
-        
+
         if (plan) {
             where.currentPlan = plan;
         }
@@ -70,6 +70,9 @@ export async function GET(request: NextRequest) {
                 location: true,
                 createdAt: true,
                 updatedAt: true,
+                sponsee: true,
+                sponsors: true,
+                referrerId: true,
                 _count: {
                     select: {
                         payments: true,
@@ -88,8 +91,8 @@ export async function GET(request: NextRequest) {
         // Get total count for pagination
         const totalUsers = await prisma.user.count({ where });
 
-        return NextResponse.json({ 
-            success: true, 
+        return NextResponse.json({
+            success: true,
             users,
             pagination: {
                 page,
@@ -102,9 +105,9 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('Error fetching users:', error);
         return NextResponse.json(
-            { 
-                success: false, 
-                error: 'Failed to fetch users' 
+            {
+                success: false,
+                error: 'Failed to fetch users'
             },
             { status: 500 }
         );
@@ -118,12 +121,12 @@ export async function GET(request: NextRequest) {
     try {
         // Authenticate user
         const currentUser = await getCurrentUser();
-        
+
         if (!currentUser || currentUser.role !== 'ADMIN') {
             return NextResponse.json(
-                { 
-                    success: false, 
-                    error: 'Unauthorized' 
+                {
+                    success: false,
+                    error: 'Unauthorized'
                 },
                 { status: 401 }
             );
@@ -133,9 +136,9 @@ export async function GET(request: NextRequest) {
 
         if (!username || !email || !password) {
             return NextResponse.json(
-                { 
-                    success: false, 
-                    error: 'Username, email, and password are required' 
+                {
+                    success: false,
+                    error: 'Username, email, and password are required'
                 },
                 { status: 400 }
             );
@@ -153,9 +156,9 @@ export async function GET(request: NextRequest) {
 
         if (existingUser) {
             return NextResponse.json(
-                { 
-                    success: false, 
-                    error: 'User with this email or username already exists' 
+                {
+                    success: false,
+                    error: 'User with this email or username already exists'
                 },
                 { status: 409 }
             );
@@ -165,8 +168,8 @@ export async function GET(request: NextRequest) {
         const hashedPassword = await bcrypt.hash(password, 12);
 
         // Get client IP address
-        const clientIP = request.headers.get('x-forwarded-for') || 
-                        request.headers.get('x-real-ip') || 
+        const clientIP = request.headers.get('x-forwarded-for') ||
+                        request.headers.get('x-real-ip') ||
                         '0.0.0.0';
 
         // Create user
@@ -190,17 +193,17 @@ export async function GET(request: NextRequest) {
             }
         });
 
-        return NextResponse.json({ 
-            success: true, 
-            user 
+        return NextResponse.json({
+            success: true,
+            user
         });
 
     } catch (error) {
         console.error('Error creating user:', error);
         return NextResponse.json(
-            { 
-                success: false, 
-                error: 'Failed to create user' 
+            {
+                success: false,
+                error: 'Failed to create user'
             },
             { status: 500 }
         );
@@ -214,31 +217,31 @@ export async function GET(request: NextRequest) {
     try {
         // Authenticate user
         const currentUser = await getCurrentUser();
-        
+
         if (!currentUser) {
             return NextResponse.json(
-                { 
-                    success: false, 
-                    error: 'Unauthorized' 
+                {
+                    success: false,
+                    error: 'Unauthorized'
                 },
                 { status: 401 }
             );
         }
 
-        const { 
-            userId, 
-            username, 
-            email, 
-            role, 
-            currentPlan, 
-            emailVerified 
+        const {
+            userId,
+            username,
+            email,
+            role,
+            currentPlan,
+            emailVerified
         } = await request.json();
 
         if (!userId) {
             return NextResponse.json(
-                { 
-                    success: false, 
-                    error: 'User ID is required' 
+                {
+                    success: false,
+                    error: 'User ID is required'
                 },
                 { status: 400 }
             );
@@ -247,9 +250,9 @@ export async function GET(request: NextRequest) {
         // Check permissions - admin can update anyone, user can only update self
         if (currentUser.role !== 'ADMIN' && currentUser.id !== userId) {
             return NextResponse.json(
-                { 
-                    success: false, 
-                    error: 'Insufficient permissions' 
+                {
+                    success: false,
+                    error: 'Insufficient permissions'
                 },
                 { status: 403 }
             );
@@ -260,7 +263,7 @@ export async function GET(request: NextRequest) {
         if (username) updateData.username = username;
         if (email) updateData.email = email;
         if (emailVerified !== undefined) updateData.emailVerified = emailVerified;
-        
+
         // Only admin can update role and plan
         if (currentUser.role === 'ADMIN') {
             if (role) updateData.role = role;
@@ -282,17 +285,17 @@ export async function GET(request: NextRequest) {
             }
         });
 
-        return NextResponse.json({ 
-            success: true, 
-            user 
+        return NextResponse.json({
+            success: true,
+            user
         });
 
     } catch (error) {
         console.error('Error updating user:', error);
         return NextResponse.json(
-            { 
-                success: false, 
-                error: 'Failed to update user' 
+            {
+                success: false,
+                error: 'Failed to update user'
             },
             { status: 500 }
         );

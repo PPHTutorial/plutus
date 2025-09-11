@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import PaymentStatus from '@/app/components/PaymentStatus';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import NavigationMenu from './NavigationMenu';
+import Header from './Header';
 
 interface PaymentSuccessContentProps {
     params?: Promise<{
@@ -30,7 +32,7 @@ export default function PaymentSuccessContent({ params }: PaymentSuccessContentP
     }, [params]);
 
     useEffect(() => {
-        
+
         const urlPaymentId = searchParams?.get('payment_id');
         const storedPayment = localStorage.getItem('currentPayment');
 
@@ -54,7 +56,7 @@ export default function PaymentSuccessContent({ params }: PaymentSuccessContentP
         try {
             const response = await fetch(`/api/payments/order/${orderIdParam}`);
             const data = await response.json();
-            
+
             if (response.ok && data.success) {
                 setPaymentId(data.payment.transactionId);
                 setPaymentData(data.payment);
@@ -75,6 +77,7 @@ export default function PaymentSuccessContent({ params }: PaymentSuccessContentP
     if (paymentComplete) {
         return (
             <div className="min-h-screen bg-gray-950 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+
                 <div className="max-w-md w-full space-y-8">
                     <div className="text-center">
                         <CheckCircleIcon className="mx-auto h-16 w-16 text-green-500" />
@@ -84,7 +87,7 @@ export default function PaymentSuccessContent({ params }: PaymentSuccessContentP
                         <p className="mt-2 text-sm text-gray-300">
                             Your plan has been upgraded successfully. You can now access all the features of your new plan.
                         </p>
-                        
+
                         {/* Payment Summary */}
                         {paymentData && (
                             <div className="mt-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
@@ -127,7 +130,8 @@ export default function PaymentSuccessContent({ params }: PaymentSuccessContentP
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col min-h-screen bg-gray-950 items-center justify-center px-4 sm:px-6 lg:px-8">
+           
             <div className="max-w-md w-full space-y-8">
                 <div className="text-center">
                     <h2 className="mt-6 text-3xl font-extrabold text-white">

@@ -7,6 +7,8 @@ import { ContentProvider } from "./hooks/context";
 import { AuthProvider } from "./hooks/AuthContext";
 import LiveTransactionPopup from "./components/LiveTransactionPopup";
 import { AuthDialogProvider } from "./hooks/auth-dialog";
+import { Suspense } from "react";
+import ReferralHandler from "./components/ReferralHandler";
 
 
 export const metadata: Metadata = {
@@ -97,6 +99,7 @@ export default function RootLayout({
           <ContentProvider>
             <AuthDialogProvider>
               <DialogProvider>
+                
                 {children}
                 <LiveTransactionPopup />
               </DialogProvider>
