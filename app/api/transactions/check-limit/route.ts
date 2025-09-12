@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({
                 success: true,
                 canMakeTransaction: true,
-                remainingTransactions: null,
+                remainingTransactions:'unlimited',
                 message: 'Unlimited transactions available for your plan'
             });
         }

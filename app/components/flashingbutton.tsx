@@ -460,7 +460,7 @@ const FlashingButton = () => {
                             style: { background: '#333', color: '#fff', fontSize: '12px' }
                         });
                     }
-                    
+
                 } else {
                     dialog.showDialog({
                         title: 'Confirm Transaction',
@@ -700,14 +700,7 @@ const FlashingButton = () => {
 
                     setIsFlashing(false);
                 }
-
-
-            } else {
-                toast.error('Unable to verify transaction limit. Please try again.', {
-                    style: { background: '#ef4444', color: '#fff', fontSize: '12px' }
-                });
-                setIsFlashing(false);
-            }
+            } 
 
 
         } catch (_error) {
