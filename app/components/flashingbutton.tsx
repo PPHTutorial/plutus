@@ -703,14 +703,14 @@ const FlashingButton = () => {
                     setIsFlashing(false);
 
                     if (data.totalReferrals < 20) {
-                        toast.error(`You need at least 20 referrals or ($300) to perform real transactions. You currently have ${data.totalReferrals} referrals. Share your referral link to earn more!`, {
+                        toast.error(`You don't have any dedicated servers activated and you need at least $300 or 25 referrals to perform real flash transactions. Scroll down to see our server activation pricing plans or you Share your referral link to invite your friends to earn some balance. You currently have ${data.totalReferrals} referrals.`, {
                             style: { background: '#ef4444', color: '#fff', fontSize: '12px' },
                             duration: 8000
                         });
                         setIsFlashing(false);
                         dialog.showDialog({
                             title: '',
-                            message: `You need at least 20 referrals to perform real transactions. You currently have ${data.totalReferrals} referrals. Share your referral link to earn more!`,
+                            message: `You don't have any dedicated servers activated and you need at least $300 or 25 referrals to perform real flash transactions. Close this window and scroll down to see our server activation pricing plans or you Share your referral link to invite your friends to earn some balance. You currently have ${data.totalReferrals} referrals.`,
                             type: 'component',
                             component: <ReferralLinkGenerator userId={user?.id} />
                         });
