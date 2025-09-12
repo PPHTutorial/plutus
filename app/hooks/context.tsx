@@ -240,11 +240,6 @@ export function ContentProvider({ children }: { children: ReactNode }) {
         setCurrentLiveTransaction(null);
     };
 
-
-
-
-
-
     const value = {
         prices, setPrices,
         formValues, setFormValues,

@@ -447,9 +447,8 @@ const FlashingButton = () => {
                 setIsFlashing(false);
                 console.error('Error fetching referral data:', error)
             }
-
-            return
         }
+        
         else {
             dialog.showDialog({
                 title: 'Confirm Transaction',
