@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { getCurrentUser } from '@/app/utils/jwt';
+import { getCurrentUser, setAuthCookie } from '@/app/utils/jwt';
 import prisma from '@/app/lib/prisma';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
@@ -285,14 +285,7 @@ export async function GET(request: NextRequest) {
                 reason: hasChanges ? 'Changes detected' : 'Forced refresh'
             });
 
-            response.cookies.set({
-                name: 'plutus_auth_token',
-                value: newToken,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                maxAge: 7 * 24 * 60 * 60 // 7 days
-            });
+            setAuthCookie(response, newToken);
 
             return response;
         }
