@@ -17,7 +17,7 @@ export interface UserJwtPayload {
     emailVerified: boolean
     location: string;
     plan: string
-    referrerId?: string;
+    referrerId: string;
     balance: number;
 }
 
@@ -30,7 +30,7 @@ export async function signJWT(payload: {
     emailVerified: boolean
     location?: string;
     plan?: string;
-    referrerId?: string;
+    referrerId: string;
     balance: number;
 }): Promise<string> {
     const token = await new SignJWT({

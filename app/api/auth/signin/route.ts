@@ -47,7 +47,9 @@ export async function POST(request: NextRequest) {
             role: user.role,
             emailVerified: user.emailVerified,
             location: user.location,
-            plan: user.currentPlan
+            plan: user.currentPlan,
+            balance:  0,
+            referrerId: user.referrerId || '',
         });
 
         // Create response
@@ -59,7 +61,8 @@ export async function POST(request: NextRequest) {
                 role: user.role,
                 emailVerified: user.emailVerified,
                 location: user.location, 
-                plan: user.currentPlan
+                plan: user.currentPlan,
+                referrerId: user.referrerId
             },
         },
             { status: 200 }

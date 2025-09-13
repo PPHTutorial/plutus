@@ -180,17 +180,17 @@ function generateBlockHash(): string {
 function getMaxTransactionAmount(planType: string): number {
   switch (planType) {
     case 'FREE':
-      return 1000; // $1,000 limit for testing
+      return 15000; 
     case 'SMALL':
-      return 10000; // $10,000
+      return 25000;
     case 'MEDIUM':
-      return 50000; // $50,000
+      return 75000;
     case 'LARGE':
-      return 200000; // $200,000
+      return 200000; 
     case 'XLARGE':
-      return Number.MAX_SAFE_INTEGER; // Unlimited
+      return 1000000;
     default:
-      return 1000;
+      return 10000000;
   }
 }
 

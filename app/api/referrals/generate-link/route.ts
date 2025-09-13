@@ -5,7 +5,7 @@ import prisma from '@/app/lib/prisma';
 export async function POST(request: NextRequest) {
     try {
         // Verify authentication
-        const token = request.cookies.get('plutus_auth_token')?.value;
+        const token = request.cookies.get('plutus-auth-token')?.value;
         if (!token) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
     try {
         // Verify authentication
-        const token = request.cookies.get('plutus_auth_token')?.value;
+        const token = request.cookies.get('plutus-auth-token')?.value;
         if (!token) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }

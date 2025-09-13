@@ -66,7 +66,7 @@ export async function GET(
 ) {
     try {
         // Verify admin authentication
-        const token = request.cookies.get('plutus_auth_token')?.value;
+        const token = request.cookies.get('plutus-auth-token')?.value;
         if (!token) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }

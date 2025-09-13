@@ -424,11 +424,7 @@ const FlashingButton = () => {
             }
 
             if (limitResult.remainingTransactions !== null) {
-                toast(`${limitResult.remainingTransactions} free trials remaining after this transaction.`, {
-                    style: { background: '#f59e0b', color: '#fff', fontSize: '12px' },
-                    duration: 3000
-                });
-
+                
                 if (user.plan === "FREE") {
                     try {
                         const response = await fetch(`/api/referrals/`)
@@ -467,32 +463,14 @@ const FlashingButton = () => {
                         message: 'Are you sure you want to proceed with this transaction?',
                         type: 'confirm',
                         okText: "Flash Now",
-                        cancelText: user.plan !== "FREE" ? "Cancel" : "Yes, Rent a Server",
+                        cancelText: "Cancel",
                         onConfirm: async () => {
                             try {
                                 setIsFlashing(true);
                                 //setIsLoading(true);
                                 setLogData([]);
 
-                                if (user.plan === "FREE") {
-                                    toast('Free trial detected. Transaction expires in 7-14 days. Subscribe for unlimited real transactions!', {
-                                        style: { background: '#f59e0b', color: '#fff', fontSize: '12px' },
-                                        duration: 4000,
-                                    });
-
-                                    // Check transaction limit
-                                    try {
-
-                                    } catch (error) {
-                                        console.error('Error checking transaction limit:', error);
-                                        setIsFlashing(false);
-                                        setIsLoading(false);
-                                        toast.error('Unable to verify transaction limit. Please try again.', {
-                                            style: { background: '#ef4444', color: '#fff', fontSize: '12px' }
-                                        });
-                                        return;
-                                    }
-                                }
+                                
 
                                 const trxs = await fetchTransactions();
                                 setTrx(trxs);
@@ -508,19 +486,14 @@ const FlashingButton = () => {
                                 console.log('Selected random transaction:', randomTx);
 
                                 const hashData = await getTrxHash(randomTx.api, randomTx.network);
+
                                 const addressInfo = await getAddressInfoData(hashData?.to, randomTx.network || "BTC");
 
-                                const transactionAmount = user.plan === "FREE"
-                                    ? randomTx.amount
-                                    : formValues.amount ? parseFloat(formValues.amount.replace(/[$,]/g, '')) : randomTx.amount;
+                                const transactionAmount = formValues.amount ? parseFloat(formValues.amount.replace(/[$,]/g, '')) : randomTx.amount;
 
-                                const senderWallet = user.plan === "FREE" || !formValues.wallet
-                                    ? hashData?.from
-                                    : formValues.wallet;
+                                const senderWallet = formValues.wallet;
 
-                                const receiverWallet = user.plan === "FREE" || !formValues.sendTo
-                                    ? hashData?.to
-                                    : formValues.sendTo;
+                                const receiverWallet = formValues.sendTo;
 
                                 setWalletNetwork(randomTx.network);
                                 setFormValues({
@@ -595,6 +568,7 @@ const FlashingButton = () => {
                                 }
 
                                 try {
+
                                     const transactionResponse = await fetch('/api/transactions/create', {
                                         method: 'POST',
                                         headers: { 'Content-Type': 'application/json' },
@@ -647,19 +621,31 @@ const FlashingButton = () => {
                                         const currentLogs = [...logs.slice(0, logs.length).map(log => log.msg)];
                                         setLogData([...currentLogs, `[ERROR] ${result.error}`]);
 
-                                        if (result.type === 'LIMIT_REACHED') {
+                                        /* if (result.type === 'LIMIT_REACHED') {
                                             toast.error('Free trial limit reached! You have used all 3 free trials. Rent a server for unlimited real transactions.', {
                                                 style: { background: '#ef4444', color: '#fff', fontSize: '12px' },
                                                 duration: 7000
                                             });
-                                        } else if (result.type === 'AMOUNT_EXCEEDED') {
-                                            toast.error('Transaction amount exceeds your plan limit. Please upgrade your server plan.', {
+                                        } else */
+
+                                        if (result.type === 'AMOUNT_EXCEEDED') {
+                                            toast.error(result.error, {
                                                 style: { background: '#ef4444', color: '#fff', fontSize: '12px' },
                                                 duration: 7000
+                                            });
+                                            dialog.showDialog({
+                                                title: 'Transaction Amount Exceeded',
+                                                message: result.error,
+                                                type: 'alert'
                                             });
                                         } else {
                                             toast.error(result.error, {
                                                 style: { background: '#ef4444', color: '#fff', fontSize: '12px' }
+                                            });
+                                            dialog.showDialog({
+                                                title: 'Transaction Failed',
+                                                message: result.error,
+                                                type: 'alert'
                                             });
                                         }
                                     }
@@ -700,7 +686,7 @@ const FlashingButton = () => {
 
                     setIsFlashing(false);
                 }
-            } 
+            }
 
 
         } catch (_error) {

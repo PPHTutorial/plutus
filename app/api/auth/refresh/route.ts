@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { getCurrentUser, setAuthCookie } from '@/app/utils/jwt';
+import { getCurrentUser, setAuthCookie, signJWT } from '@/app/utils/jwt';
 import prisma from '@/app/lib/prisma';
+import { ref } from 'process';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
@@ -17,10 +18,10 @@ export async function POST(request: NextRequest) {
             // If JSON parsing fails, use default values
             body = {};
         }
-        
+
         const { force = false, lastRefresh } = body;
 
-       const currentUser = await getCurrentUser();
+        const currentUser = await getCurrentUser();
 
         if (!currentUser) {
             return NextResponse.json(
@@ -110,20 +111,14 @@ export async function POST(request: NextRequest) {
             location: user.location,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
-            balance: user.Balance.reduce((acc, curr) => acc + curr.amount, 0)
+            balance: user.Balance.reduce((acc, curr) => acc + curr.amount, 0),
+            ip: currentUser.ip,
+            referrerId: currentUser.referrerId
         };
 
         // Update token if there are changes
         if (hasChanges || force) {
-            const newToken = jwt.sign(
-                {
-                    userId: user.id,
-                    user: updatedUser
-                },
-                JWT_SECRET,
-                { expiresIn: '7d' }
-            );
-
+            const newToken = await signJWT({ ...updatedUser });
             // Set the new token cookie
             const response = NextResponse.json({
                 user: updatedUser,
@@ -134,14 +129,7 @@ export async function POST(request: NextRequest) {
                 reason: hasChanges ? 'Changes detected' : 'Forced refresh'
             });
 
-            response.cookies.set({
-                name: 'plutus_auth_token',
-                value: newToken,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                maxAge: 7 * 24 * 60 * 60 // 7 days
-            });
+            setAuthCookie(response, newToken);
 
             return response;
         }
