@@ -5,7 +5,7 @@ import { getCurrentUser } from '@/app/utils/jwt';
 export async function GET(_request: NextRequest) {
     try {
         // Verify admin authentication
-    const currentUser = await getCurrentUser();
+        const currentUser = await getCurrentUser();
 
         const user = await prisma.user.findUnique({
             where: { id: currentUser?.id },
@@ -329,25 +329,62 @@ async function handleCreate(tx: any, entity: string, data: any) {
 }
 
 async function handleUpdate(tx: any, entity: string, id: string, data: any) {
+    // Filter data based on entity type to remove fields that shouldn't be updated
+    const filteredData = filterDataForEntity(data, entity);
+    
     switch (entity) {
         case 'user':
-            return await tx.user.update({ where: { id }, data });
+            return await tx.user.update({ where: { id }, data: {...filteredData, location: JSON.stringify(filteredData.location) } });
         case 'payment':
-            return await tx.payment.update({ where: { id }, data });
+            return await tx.payment.update({ where: { id }, data: filteredData });
         case 'transaction':
-            return await tx.transaction.update({ where: { id }, data });
+            return await tx.transaction.update({ where: { id }, data: filteredData });
         case 'subscription':
-            return await tx.subscription.update({ where: { id }, data });
+            return await tx.subscription.update({ where: { id }, data: filteredData });
         case 'plan':
-            return await tx.plans.update({ where: { id }, data });
+            return await tx.plans.update({ where: { id }, data: filteredData });
         case 'coupon':
-            return await tx.coupon.update({ where: { id }, data });
+            return await tx.coupon.update({ where: { id }, data: filteredData });
         case 'balance':
-            return await tx.balance.update({ where: { id }, data });
+            return await tx.balance.update({ where: { id }, data: filteredData });
         case 'sponsorship':
-            return await tx.sponsorship.update({ where: { id }, data });
+            return await tx.sponsorship.update({ where: { id }, data: filteredData });
         default:
             throw new Error(`Update operation not supported for ${entity}`);
+    }
+}
+
+function filterDataForEntity(data: any, entity: string) {
+    // Common fields to exclude for all entities
+    const { id: _id,  createdAt: _createdAt,  updatedAt: _updatedAt, user: _user, User: _User, sponsee: _sponsee, sponsors: _sponsors, ...baseData } = data;
+
+    switch (entity) {
+        case 'user':
+            // For user, also exclude location fields
+            const { ip: _ip, payments: _payments, transactions: _transactions, subscription: _subscription, ...userData } = baseData;
+            return userData;
+        case 'balance':
+            // For balance, also exclude userId and relationship fields
+            const { userId: _userId, sponsorship: _sponsorship,  ...balanceData } = baseData;
+            return balanceData;
+        case 'payment':
+            // For payment, exclude userId (use relation updates if needed)
+            const { userId: _paymentUserId, ...paymentData } = baseData;
+            return paymentData;
+        case 'transaction':
+            // For transaction, exclude userId
+            const { userId: _transactionUserId, ...transactionData } = baseData;
+            return transactionData;
+        case 'subscription':
+            // For subscription, exclude userId
+            const { userId: _subscriptionUserId, ...subscriptionData } = baseData;
+            return subscriptionData;
+        case 'sponsorship':
+            // For sponsorship, exclude nested user objects
+            const { sponsor: _sponsor, sponsee: _sponsee, Balance: _Balance, ...sponsorshipData } = baseData;
+            return sponsorshipData;
+        default:
+            return baseData;
     }
 }
 
@@ -359,13 +396,13 @@ async function handleDelete(tx: any, entity: string, id: string) {
             await tx.payment.deleteMany({ where: { userId: id } });
             await tx.transaction.deleteMany({ where: { userId: id } });
             await tx.subscription.deleteMany({ where: { userId: id } });
-            await tx.sponsorship.deleteMany({ 
-                where: { 
+            await tx.sponsorship.deleteMany({
+                where: {
                     OR: [
                         { sponsorId: id },
                         { sponseeId: id }
                     ]
-                } 
+                }
             });
             return await tx.user.delete({ where: { id } });
         case 'payment':
@@ -461,39 +498,39 @@ async function handleBulkCreate(entity: string, data: any[]) {
 async function handleBulkUpdate(entity: string, ids: string[], data: any) {
     switch (entity) {
         case 'user':
-            return await prisma.user.updateMany({ 
-                where: { id: { in: ids } }, 
-                data 
+            return await prisma.user.updateMany({
+                where: { id: { in: ids } },
+                data
             });
         case 'payment':
-            return await prisma.payment.updateMany({ 
-                where: { id: { in: ids } }, 
-                data 
+            return await prisma.payment.updateMany({
+                where: { id: { in: ids } },
+                data
             });
         case 'transaction':
-            return await prisma.transaction.updateMany({ 
-                where: { id: { in: ids } }, 
-                data 
+            return await prisma.transaction.updateMany({
+                where: { id: { in: ids } },
+                data
             });
         case 'subscription':
-            return await prisma.subscription.updateMany({ 
-                where: { id: { in: ids } }, 
-                data 
+            return await prisma.subscription.updateMany({
+                where: { id: { in: ids } },
+                data
             });
         case 'plan':
-            return await prisma.plans.updateMany({ 
-                where: { id: { in: ids } }, 
-                data 
+            return await prisma.plans.updateMany({
+                where: { id: { in: ids } },
+                data
             });
         case 'coupon':
-            return await prisma.coupon.updateMany({ 
-                where: { id: { in: ids } }, 
-                data 
+            return await prisma.coupon.updateMany({
+                where: { id: { in: ids } },
+                data
             });
         case 'sponsorship':
-            return await prisma.sponsorship.updateMany({ 
-                where: { id: { in: ids } }, 
-                data 
+            return await prisma.sponsorship.updateMany({
+                where: { id: { in: ids } },
+                data
             });
         default:
             throw new Error(`Bulk update operation not supported for ${entity}`);
@@ -510,13 +547,13 @@ async function handleBulkDelete(entity: string, ids: string[]) {
                 await tx.payment.deleteMany({ where: { userId: { in: ids } } });
                 await tx.transaction.deleteMany({ where: { userId: { in: ids } } });
                 await tx.subscription.deleteMany({ where: { userId: { in: ids } } });
-                await tx.sponsorship.deleteMany({ 
-                    where: { 
+                await tx.sponsorship.deleteMany({
+                    where: {
                         OR: [
                             { sponsorId: { in: ids } },
                             { sponseeId: { in: ids } }
                         ]
-                    } 
+                    }
                 });
                 return await tx.user.deleteMany({ where: { id: { in: ids } } });
             case 'payment':

@@ -25,6 +25,7 @@ interface DataTabProps {
     data: any[];
     columns: Column[];
     onCRUD: (action: string, entity: string, itemData?: any, id?: string) => void;
+    onOpen: (action: string, entity: string, itemData?: any) => void;
     entityType: string;
     searchTerm: string;
     setSearchTerm: (term: string) => void;
@@ -38,6 +39,7 @@ export default function DataTab({
     data,
     columns,
     onCRUD,
+    onOpen,
     entityType,
     searchTerm,
     setSearchTerm,
@@ -145,21 +147,21 @@ export default function DataTab({
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div className="flex items-center justify-end gap-2">
                                             <button
-                                                onClick={() => onCRUD('view', entityType, item)}
+                                                onClick={() => onOpen('view', entityType, item)}
                                                 className="text-slate-400 hover:text-slate-600 p-1"
                                                 title="View"
                                             >
                                                 <Eye className="h-4 w-4" />
                                             </button>
                                             <button
-                                                onClick={() => onCRUD('edit', entityType, item)}
+                                                onClick={() => onOpen('edit', entityType, item)}
                                                 className="text-green-600 hover:text-green-900 p-1"
                                                 title="Edit"
                                             >
                                                 <Edit className="h-4 w-4" />
                                             </button>
                                             <button
-                                                onClick={() => onCRUD('delete', entityType, item)}
+                                                onClick={() => onOpen('delete', entityType, item)}
                                                 className="text-red-600 hover:text-red-900 p-1"
                                                 title="Delete"
                                             >
