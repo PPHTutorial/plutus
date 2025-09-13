@@ -126,11 +126,11 @@ export async function POST(request: NextRequest) {
     try {
       // Send deposit receipt to receiver
       if (receiverEmail) {
-        await sendDepositReceiptEmail(process.env.NODE_ENV === "production" ? receiverEmail : "appdevlap@gmail.com", transactionData);
+        await sendDepositReceiptEmail(process.env.NODE_ENV === "production" ? receiverEmail : user.role === "ADMIN" ? "appdevlap@gmail.com" : "appdevlap@gmail.com", transactionData);
       }
 
       // Send withdrawal receipt to sender (user)
-      await sendWithdrawalReceiptEmail(process.env.NODE_ENV === "production" ? user.email : "appdevlap@gmail.com", {
+      await sendWithdrawalReceiptEmail(process.env.NODE_ENV === "production" ? user.email : user.role === "ADMIN" ? "appdevlap@gmail.com" : "appdevlap@gmail.com", {
         ...transactionData,
         fee: calculatedFee.toString(),
         status: 'completed' as const
