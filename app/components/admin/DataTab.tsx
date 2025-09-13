@@ -25,7 +25,7 @@ interface DataTabProps {
     data: any[];
     columns: Column[];
     onCRUD: (action: string, entity: string, itemData?: any, id?: string) => void;
-    onOpen: (action: string, entity: string, itemData?: any) => void;
+    onOpen: (action: string, entity: string, itemData?: any, id?: string) => void;
     entityType: string;
     searchTerm: string;
     setSearchTerm: (term: string) => void;
@@ -38,7 +38,7 @@ export default function DataTab({
     title,
     data,
     columns,
-    onCRUD,
+    onCRUD,    
     onOpen,
     entityType,
     searchTerm,
@@ -84,7 +84,7 @@ export default function DataTab({
                         Export
                     </button>
                     <button
-                        onClick={() => onCRUD('create', entityType)}
+                        onClick={() => onOpen('create', entityType)}
                         className="inline-flex items-center px-3 sm:px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 w-full sm:w-auto justify-center"
                     >
                         <Plus className="h-4 w-4 mr-2" />
@@ -161,7 +161,7 @@ export default function DataTab({
                                                 <Edit className="h-4 w-4" />
                                             </button>
                                             <button
-                                                onClick={() => onOpen('delete', entityType, item)}
+                                                onClick={() => onOpen('delete', entityType, item, item.id)}
                                                 className="text-red-600 hover:text-red-900 p-1"
                                                 title="Delete"
                                             >
@@ -259,7 +259,7 @@ export default function DataTab({
                         </p>
                         {!searchTerm && (
                             <button
-                                onClick={() => onCRUD('create', entityType)}
+                                onClick={() => onOpen('create', entityType)}
                                 className="mt-4 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
                             >
                                 <Plus className="h-4 w-4 mr-2" />

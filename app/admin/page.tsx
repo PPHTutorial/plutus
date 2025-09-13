@@ -30,7 +30,6 @@ import {
     sponsorshipColumns
 } from '../components/admin/columns';
 import { useDialog } from '../hooks/dialog';
-import toast from 'react-hot-toast';
 
 // Types based on schema
 interface User {
@@ -189,26 +188,7 @@ export default function AdminDashboard() {
         }
     };
 
-    const handleOpen = async (action: string, entity: string, itemData?: any) => {
-        // For view, edit, and create actions, show modal instead of sending direct request
-        if (action === 'view') {
-            setShowModal({ type: 'view', entity, data: itemData });
-            return;
-        }
-
-        if (action === 'edit') {
-            setShowModal({ type: 'edit', entity, data: itemData });
-            return;
-        }
-
-        if (action === 'create') {
-            setShowModal({ type: 'create', entity });
-            return;
-        }
-
-        
-    };
-    const handleCRUDOperation = async (action: string, entity: string, itemData?: any, id?: string) => {        
+    const handleCRUDOperation = async (action: string, entity: string, itemData?: any, id?: string) => {
         // For delete action, show confirmation dialog
         if (action === 'delete') {
             dialog.showDialog({
@@ -237,7 +217,7 @@ export default function AdminDashboard() {
             return;
         }
 
-          
+        // For other actions (update from modal), send request directly
         try {
             const response = await fetch('/api/admin/dashboard', {
                 method: 'POST',
@@ -254,6 +234,27 @@ export default function AdminDashboard() {
             console.error('CRUD operation error:', error);
             alert('Operation failed. Please try again.');
         }
+    };
+
+    const handleOpen = async (action: string, entity: string, itemData?: any, id?: string) => {
+        // For view, edit, and create actions, show modal instead of sending direct request
+        if (action === 'view') {
+            setShowModal({ type: 'view', entity, data: itemData });
+            return;
+        }
+
+        if (action === 'edit') {
+            setShowModal({ type: 'edit', entity, data: itemData });
+            return;
+        }
+
+        if (action === 'create') {
+            setShowModal({ type: 'create', entity });
+            return
+        }
+
+        // For delete action, show confirmation dialog
+
     };
 
     // Analytics calculations (client-side)
@@ -430,140 +431,6 @@ export default function AdminDashboard() {
                 </div>
             </div>
         );
-    }
-
-    function validateAndFormatData(data: any, entityType: string): any | null {
-        if (!data || typeof data !== 'object') {
-            return null;
-        }
-
-        try {
-            switch (entityType) {
-                case 'user':
-                    return validateUser(data);
-                case 'payment':
-                    return validatePayment(data);
-                case 'transaction':
-                    return validateTransaction(data);
-                case 'subscription':
-                    return validateSubscription(data);
-                case 'plan':
-                    return validatePlan(data);
-                case 'balance':
-                    return validateBalance(data);
-                case 'coupon':
-                    return validateCoupon(data);
-                case 'sponsorship':
-                    return validateSponsorship(data);
-                default:
-                    return null;
-            }
-        } catch (error) {
-            console.error(`Validation error for ${entityType}:`, error);
-            return null;
-        }
-    }
-
-
-    function validateUser(data: any): User | null {
-        if (!data.username?.trim() || !data.email?.trim()) return null;
-
-        return {
-            ...data,
-            username: data.username.trim(),
-            email: data.email.toLowerCase().trim(),
-            role: data.role || 'USER',
-            currentPlan: data.currentPlan || 'FREE',
-            emailVerified: Boolean(data.emailVerified),
-            location: data.location || { country: 'Unknown', city: 'Unknown' }
-        };
-    }
-
-    function validatePayment(data: any): Payment | null {
-        if (!data.amount || data.amount <= 0) return null;
-
-        return {
-            ...data,
-            amount: parseFloat(data.amount),
-            status: data.status || 'PENDING',
-            currency: data.currency || 'USD',
-            paymentMethod: data.paymentMethod || 'CARD',
-            provider: data.provider || 'STRIPE'
-        };
-    }
-
-    function validateTransaction(data: any): Transaction | null {
-        if (!data.amount || !data.type) return null;
-
-        return {
-            ...data,
-            amount: parseFloat(data.amount),
-            type: data.type,
-            status: data.status || 'PENDING',
-            currency: data.currency || 'USD',
-            description: data.description?.trim() || '',
-            network: data.network || '',
-            hash: data.hash || ''
-        };
-    }
-
-    function validateSubscription(data: any): Subscription | null {
-        if (!data.plan || !data.startDate) return null;
-
-        return {
-            ...data,
-            plan: data.plan,
-            status: data.status || 'ACTIVE',
-            startDate: new Date(data.startDate).toISOString(),
-            endDate: data.endDate ? new Date(data.endDate).toISOString() : null
-        };
-    }
-
-    function validatePlan(data: any): Plan | null {
-        if (!data.title?.trim() || data.price < 0) return null;
-
-        return {
-            ...data,
-            title: data.title.trim(),
-            description: data.description?.trim() || '',
-            accessType: data.accessType || 'BASIC',
-            price: parseFloat(data.price) || 0,
-            features: data.features || ''
-        };
-    }
-
-    function validateBalance(data: any): Balance | null {
-        if (data.amount == null || data.amount < 0) return null;
-
-        return {
-            ...data,
-            amount: parseFloat(data.amount),
-            currency: data.currency || 'USD',
-            type: data.type || 'DEPOSIT'
-        };
-    }
-
-    function validateCoupon(data: any): Coupon | null {
-        if (!data.code?.trim() || data.discount == null || data.discount < 0) return null;
-
-        return {
-            ...data,
-            code: data.code.trim().toUpperCase(),
-            description: data.description?.trim() || '',
-            discount: parseFloat(data.discount),
-            isActive: Boolean(data.isActive),
-            expiresAt: data.expiresAt ? new Date(data.expiresAt).toISOString() : null
-        };
-    }
-
-    function validateSponsorship(data: any): Sponsorship | null {
-        if (!data.sponsoredAmount || data.sponsoredAmount <= 0) return null;
-
-        return {
-            ...data,
-            sponsoredAmount: parseFloat(data.sponsoredAmount),
-            redeemed: Boolean(data.redeemed)
-        };
     }
 
     return (
@@ -805,23 +672,12 @@ export default function AdminDashboard() {
                 <Modal
                     title={`${showModal.type.charAt(0).toUpperCase() + showModal.type.slice(1)} ${showModal.entity || 'Item'}`}
                     onClose={() => setShowModal(null)}
-                    onSave={(data: any) => {                        
-                        // Validate and format the data before sending to API
-                        const validatedData = validateAndFormatData(data, showModal.entity || '');
-                        if (!validatedData) {
-                            toast.error('Invalid data provided. Please check all fields.', {
-                                style: { background: '#f87171', color: '#fff', fontSize: '14px' },
-                            });
-                            return Promise.reject(new Error('Validation failed'));
-                        }
-                        return handleCRUDOperation(
-                            showModal.data ? 'update' : 'create',
-                            showModal.entity || showModal.type,
-                            data,
-                            showModal.data?.id
-                        )
-                    }
-                    }
+                    onSave={(data: any) => handleCRUDOperation(
+                        showModal.data ? 'update' : 'create',
+                        showModal.entity || showModal.type,
+                        data,
+                        showModal.data?.id
+                    )}
                     initialData={showModal.data}
                     mode={showModal.type as 'view' | 'edit' | 'create'}
                 />

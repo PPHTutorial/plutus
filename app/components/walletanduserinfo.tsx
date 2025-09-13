@@ -58,7 +58,7 @@ const WalletAndUserInfo = ({ user, location }: { user: any, location: any }) => 
                         </div>
                     )}
                 </div>
-                <div suppressHydrationWarning className="w-full flex flex-col gap-1.5 relative border border-neutral-400 h-40 p-4">
+                <div suppressHydrationWarning className=" w-full flex flex-col gap-1.5 relative border border-neutral-400 h-40 p-4">
                     <h3 className="absolute -top-3 left-2 font-extrabold mb-2 bg-black px-2">Client Info</h3>
                     {user && <div className="flex space-x-2">
                         <div className="flex flex-col">
@@ -121,8 +121,10 @@ const WalletAndUserInfo = ({ user, location }: { user: any, location: any }) => 
                         </div>}
                     </div>}
                     {user && <div className="flex space-x-2">
-                        
+
                     </div>}
+
+                    {user && user.role === "ADMIN" && <div className="flex w-[96%] h-[92%]  backdrop-blur-[2.5px] translate-x-2 translate-y-3 absolute inset-0 rounded-md "></div>}
 
                 </div>
             </div>

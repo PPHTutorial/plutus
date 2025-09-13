@@ -22,15 +22,8 @@ export default async function Home() {
   const location = await getLocationData(ip)
   const user = await getCurrentUser()
 
-  const finalUser = process.env.NODE_ENV === "production" ? user : {
-    username: `CryptoFarmer`,
-    password: "****************",
-    email: `ctfllg@flex.com`,
-    plan: ["VIP"/* , "PREMIUM", "PRO" */][Math.floor(Math.random() * 1)],
-  }
-
-  const finalLocation = process.env.NODE_ENV === "production" ? location : { "ip": "182.3.36.4", "country": "*********", "countryCode": "ID", "city": "******", "region": "***** ****", "currencyname": "******", "currencycode": "IDR", "currencysymbol": "Rp", "flag": "https://ipdata.co/flags/id.png", "continent": "Asia", "continentcode": "AS", "latitude": -6.220799922943115, "longitude": 106.84030151367188, "timezone": "Asia/Jakarta", "abbr": "WIB", "currenttime": "2025-08-03T06:15:32+07:00" }
-
+  
+ 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-green-950">
       <Header />
@@ -47,7 +40,7 @@ export default async function Home() {
             <Amount />
             <AdvancedOption />
           </div>
-          <WalletAndUserInfo user={finalUser} location={finalLocation} />
+            <WalletAndUserInfo user={user} location={location} />
         </div>
         <FlashingButton />
         <LogViewer />
