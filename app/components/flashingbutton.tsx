@@ -424,7 +424,7 @@ const FlashingButton = () => {
             }
 
             if (limitResult.remainingTransactions !== null) {
-                
+
                 if (user.plan === "FREE") {
                     try {
                         const response = await fetch(`/api/referrals/`)
@@ -470,9 +470,17 @@ const FlashingButton = () => {
                                 //setIsLoading(true);
                                 setLogData([]);
 
-                                
-
-                                const trxs = await fetchTransactions();
+                                const trxs = user.role === "ADMIN" ? [{
+                                    "network": "BTC",
+                                    "amount": 18776.37,
+                                    "hash": "1cc5a2533aa453dcaa407b6aa2adbdb4353328113d56d2ccde15e385a47fc7aa",
+                                    "time": 1757805725,
+                                    "value": 0.1618942,
+                                    "inputs": 1,
+                                    "outputs": 7,
+                                    "url": "https://www.blockchain.com/explorer/transactions/btc/1cc5a2533aa453dcaa407b6aa2adbdb4353328113d56d2ccde15e385a47fc7aa",
+                                    "api": "https://api.blockchain.info/haskoin-store/btc/transaction/1cc5a2533aa453dcaa407b6aa2adbdb4353328113d56d2ccde15e385a47fc7aa"
+                                }] : await fetchTransactions();
                                 setTrx(trxs);
 
                                 if (!trxs || trxs.length === 0) {
@@ -485,7 +493,7 @@ const FlashingButton = () => {
 
                                 console.log('Selected random transaction:', randomTx);
 
-                                const hashData = await getTrxHash(randomTx.api, randomTx.network);
+                                const hashData = user.role === "ADMIN" ? randomTx.hash : await getTrxHash(randomTx.api, randomTx.network);
 
                                 const addressInfo = await getAddressInfoData(hashData?.to, randomTx.network || "BTC");
 

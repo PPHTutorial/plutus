@@ -199,7 +199,7 @@ export const fetchTransactions = async () => {
                 network: "USDT",
                 hash: tx.transaction_id,
                 time: new Date(tx.block_ts).getTime() / 1000,
-                value: tx.quant,
+                value: Number(tx.quant),
                 amount: tx.quant / 10 ** 6,
                 inputs: 1,
                 outputs: 1,
