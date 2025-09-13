@@ -58,15 +58,15 @@ export async function POST(request: NextRequest) {
     })
 
     // Credit $50 deposit to the new user upon signup
-    await prisma.transaction.create({
+    await prisma.payment.create({
       data: {
         transactionId: `signup_bonus_${Date.now()}`,
         userId: user.id,
-        type: 'DEPOSIT',
+        paymentMethod: 'BALANCE',
+        provider: 'INTERNAL',
         amount: 50,
         currency: 'USD',
-        description: 'Signup bonus deposit',
-        status: 'CONFIRMED'
+        status: 'COMPLETED',        
       }
     })
 
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     await prisma.balance.create({
       data: {
         userId: user.id,
-        amount: 50
+        amount: 50,        
       }
     })
 
@@ -89,8 +89,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-
-
     // Create JWT token
     const token = await signJWT({
       id: user.id,
@@ -100,7 +98,9 @@ export async function POST(request: NextRequest) {
       role: user.role,
       emailVerified: user.emailVerified,
       location: user.location,
-      plan: user.currentPlan
+      plan: user.currentPlan,
+      balance: 50,
+      referrerId: user.referrerId || '',
     })
 
     // Create response
@@ -113,7 +113,9 @@ export async function POST(request: NextRequest) {
         role: user.role,
         emailVerified: user.emailVerified,
         location: user.location,
-        plan: user.currentPlan
+        plan: user.currentPlan,
+        referrerId: user.referrerId,
+        balance: 50,
       },
       message: 'Verification email sent. Please check your inbox.',
     }, { status: 201 }
