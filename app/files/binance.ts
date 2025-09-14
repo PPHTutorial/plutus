@@ -124,10 +124,10 @@ export const BinanceDeposit = () => {
 
             <!-- Main Content -->
             <div class="content">
-                <div class="title">USDT Deposit Successful</div>
+                <div class="title">BTC Deposit Successful</div>
                 
                 <div class="message">
-                    Your deposit of 45,804.75 USDT is now available in your Binance account. Log in to check your balance.
+                    Your deposit of 0.1099928 BTC is now available in your Binance account. Log in to check your balance.
                     Read our <a href="https://www.binance.com/en/support/faq">FAQs</a> if you are running into problems.
                 </div>
 
@@ -248,6 +248,9 @@ export const BinanceWithdrawal = () => {
                 font-weight: 900; 
                 font-size: 14px; 
                 margin: 15px 0; 
+            }
+            .ii a[href] {
+                color: #000000 !important;
             }
             .footer-divider { 
                 border-top: 1px solid #f0b90b; 

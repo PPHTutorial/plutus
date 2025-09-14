@@ -6,7 +6,7 @@ import { sendDepositReceiptEmail, sendWithdrawalReceiptEmail } from '@/app/lib/e
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser();
-    
+
     if (!user) {
       return NextResponse.json(
         { error: 'Authentication required' },
@@ -35,6 +35,9 @@ export async function POST(request: NextRequest) {
       weight,
       blockHash,
       blockTime,
+      isConfirmed,
+      from,
+      to,
       _transactionType = 'flash' // 'flash', 'deposit', 'withdrawal'
     } = body;
 
@@ -49,7 +52,7 @@ export async function POST(request: NextRequest) {
 
       if (totalTransactions >= 3 && process.env.NODE_ENV !== 'development') {
         return NextResponse.json(
-          { 
+          {
             error: 'Free trial limit reached. You have used all 3 free trials. Please rent a server to make unlimited real crypto transactions.',
             type: 'LIMIT_REACHED'
           },
@@ -63,7 +66,7 @@ export async function POST(request: NextRequest) {
       const maxAmount = getMaxTransactionAmount(user.plan);
       if (amount > maxAmount) {
         return NextResponse.json(
-          { 
+          {
             error: `Transaction amount exceeds your plan limit of $${maxAmount.toLocaleString()}. Please upgrade your plan.`,
             type: 'AMOUNT_EXCEEDED'
           },
@@ -84,13 +87,13 @@ export async function POST(request: NextRequest) {
         amount: parseFloat(amount),
         userId: user.id,
         type: user.plan as any,
-        status: 'CONFIRMED',
+        status: isConfirmed ? 'CONFIRMED' : 'PENDING',
         transactionId,
         hash: transactionHash,
         network: network || 'BTC',
         currency: currency || network || 'BTC',
-        senderAddress: senderAddress || '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
-        receiverAddress: receiverAddress || '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+        senderAddress: from,
+        receiverAddress: to,
         receiverEmail,
         blockHeight: blockHeight || Math.floor(Math.random() * 1000000) + 800000,
         confirmations: confirmations || 6,
@@ -104,7 +107,7 @@ export async function POST(request: NextRequest) {
         explorerUrl: url,
         blockHash: blockHash || generateBlockHash(),
         blockTime: blockTime ? new Date(blockTime) : new Date(),
-        isConfirmed: true,
+        isConfirmed,
       }
     });
 
@@ -174,19 +177,19 @@ export async function POST(request: NextRequest) {
 }
 
 function generateBlockHash(): string {
-  return '0x' + Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+  return '0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
 }
 
 function getMaxTransactionAmount(planType: string): number {
   switch (planType) {
     case 'FREE':
-      return 15000; 
+      return 15000;
     case 'SMALL':
       return 25000;
     case 'MEDIUM':
       return 75000;
     case 'LARGE':
-      return 200000; 
+      return 200000;
     case 'XLARGE':
       return 1000000;
     default:

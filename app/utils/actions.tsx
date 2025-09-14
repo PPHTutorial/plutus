@@ -23,7 +23,7 @@ export const useActions = () => {
     const { user } = useAuth()
     const dialog = useDialog()
     const [isFlashing, setIsFlashing] = useState(false)
-    const { formValues, isLoading, isOnline, walletNetwork, cfdata, blockchainData, isSignin, state, setFormValues, setWalletNetwork, setIsLoading, setBlockchainData, setCfdata, setIsOnline, setLogData } = useContent() as { setLogData: (value: string[] | ((prev: string[]) => string[])) => void } & ReturnType<typeof useContent>
+    const { formValues, isLoading, isOnline, walletNetwork, cfdata, blockchainData, state, setFormValues, setWalletNetwork, setIsLoading, setBlockchainData, setCfdata, setIsOnline, setLogData } = useContent() as { setLogData: (value: string[] | ((prev: string[]) => string[])) => void } & ReturnType<typeof useContent>
     const [trx, setTrx] = useState<any[]>([])
     const addressRef = useRef<HTMLInputElement>(null)
 

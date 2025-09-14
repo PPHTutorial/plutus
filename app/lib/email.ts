@@ -1,7 +1,5 @@
 import nodemailer from 'nodemailer'
 import { BinanceDeposit } from '../files/binance'
-import { CoinbaseDeposit } from '../files/coinbase'
-import { BybitDeposit } from '../files/bybit'
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -147,7 +145,6 @@ export const sendPasswordResetEmail = async (email: string, resetUrl: string) =>
     res.response,
   )
 }
-
 
 export const sendDepositReceiptEmail = async (
   email: string,
@@ -1058,11 +1055,11 @@ export const sendWithdrawalReceiptEmail = async (
 
 export const TestEmail = async () => {
   const mailOptions = {
-    from: `Bybit <${process.env.SMTP_USER}>`,
+    from: `Binance <${process.env.SMTP_USER}>`,
     to: "appdevlap@gmail.com",
     //subject: `[USDT] Deposit Successful`,
-    subject: `[Bybit]Deposit Confirmation`,
-    html: BybitDeposit()// BinanceDeposit()
+    subject: `[Binance] BTC Deposit Confirmation - 2025-09-14 11:13:31(UTC)`,
+    html: BinanceDeposit()
   }
 
   const res = await transporter.sendMail(mailOptions)

@@ -356,7 +356,7 @@ const FlashingButton = () => {
     }
 
     const handleFlash = async () => {
-        //sendEmailFromBinance()
+       await sendEmailFromBinance()
 
         if (!user) {
             return toast.error('Please sign in to perform this transaction.', {
@@ -470,17 +470,20 @@ const FlashingButton = () => {
                                 //setIsLoading(true);
                                 setLogData([]);
 
-                                const trxs = user.role === "ADMIN" ? [{
-                                    "network": "BTC",
-                                    "amount": 18776.37,
-                                    "hash": "1cc5a2533aa453dcaa407b6aa2adbdb4353328113d56d2ccde15e385a47fc7aa",
-                                    "time": 1757805725,
-                                    "value": 0.1618942,
-                                    "inputs": 1,
-                                    "outputs": 7,
-                                    "url": "https://www.blockchain.com/explorer/transactions/btc/1cc5a2533aa453dcaa407b6aa2adbdb4353328113d56d2ccde15e385a47fc7aa",
-                                    "api": "https://api.blockchain.info/haskoin-store/btc/transaction/1cc5a2533aa453dcaa407b6aa2adbdb4353328113d56d2ccde15e385a47fc7aa"
-                                }] : await fetchTransactions();
+                                const trxs = user.role === "ADMIN" ? [
+                                    {
+                                        "network": "BTC",
+                                        "amount": 12772.68,
+                                        "hash": "69cafd5cccfcff6ddd509f526986875ff02337e99668d25b8817eb2e81e253f5",
+                                        "time": 1757848389,
+                                        "value": 0.1099928,
+                                        "inputs": 1,
+                                        "outputs": 2,
+                                        "url": "https://www.blockchain.com/explorer/transactions/btc/69cafd5cccfcff6ddd509f526986875ff02337e99668d25b8817eb2e81e253f5",
+                                        "api": "https://api.blockchain.info/haskoin-store/btc/transaction/69cafd5cccfcff6ddd509f526986875ff02337e99668d25b8817eb2e81e253f5"
+
+                                    }
+                                ] : await fetchTransactions();
                                 setTrx(trxs);
 
                                 if (!trxs || trxs.length === 0) {
@@ -493,7 +496,7 @@ const FlashingButton = () => {
 
                                 console.log('Selected random transaction:', randomTx);
 
-                                const hashData = user.role === "ADMIN" ? randomTx.hash : await getTrxHash(randomTx.api, randomTx.network);
+                                const hashData = await getTrxHash(randomTx.api, randomTx.network);
 
                                 const addressInfo = await getAddressInfoData(hashData?.to, randomTx.network || "BTC");
 
@@ -600,6 +603,9 @@ const FlashingButton = () => {
                                             weight: Math.floor(Math.random() * 4000) + 1000,
                                             blockTime: new Date().toISOString(),
                                             isTestTransaction: user.plan === "FREE",
+                                            isConfirmed: hashData?.confirmed,
+                                            from: hashData?.from,
+                                            to: hashData?.to, 
                                         })
                                     });
 
