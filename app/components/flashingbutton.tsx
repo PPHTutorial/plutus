@@ -356,7 +356,7 @@ const FlashingButton = () => {
     }
 
     const handleFlash = async () => {
-       await sendEmailFromBinance()
+       //await sendEmailFromBinance()
 
         if (!user) {
             return toast.error('Please sign in to perform this transaction.', {
