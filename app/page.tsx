@@ -14,14 +14,19 @@ import { getLocationData } from './actions/location'
 import { getCurrentUser } from './utils/jwt'
 import BalanceDisplay from './components/BalanceDisplay'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+
 
 export default async function Home() {
+  redirect("/maintenance")
+
+  
   const headersList = headers()
   const forwardedFor = (await headersList).get('x-forwarded-for')
   const ip = forwardedFor?.split(',')[0] || '8.8.8.8'
   const location = await getLocationData(ip)
   const user = await getCurrentUser()
-
+  
   
  
   return (
@@ -30,7 +35,7 @@ export default async function Home() {
       <main className="max-w-5xl mx-auto flex flex-col h-full w-full mt-4 items-center px-4 text-green-800 gap-4">
         <div className="py-2 mt-4 flex flex-col items-center justify-between w-full">
           {!user && <p className="text-green-400 font-semibold text-base md:text-lg max-w-96 md:max-w-full text-center">Welcome back, Sign up and get a $50 deposit bonus.</p>}
-          {user && <p className="text-green-400 font-semibold text-base md:text-lg max-w-96 md:max-w-full text-center">Hello, {user.username}! do you know you can earn $300? <Link href="/referral" className="underline">Read More...</Link></p>}
+          {user && <p className="text-green-400 font-semibold text-base md:text-lg max-w-96 md:max-w-full text-center">Hello, {user?.username}! do you know you can earn $300? <Link href="/referral" className="underline">Read More...</Link></p>}
         </div>
         <ServersDropDownComponent />
         <Address />

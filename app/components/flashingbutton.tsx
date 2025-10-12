@@ -18,11 +18,13 @@ const FlashingButton = () => {
     const { user } = useAuth()
     const dialog = useDialog()
     const { setDialogType } = useContent()
-    const { formValues, isFlashing, setFormValues, setLogData, setIsFlashing, setWalletNetwork, setIsLoading, setBlockchainData } = useContent()
+    const { formValues, isFlashing, setFormValues, setLogData, setIsFlashing,
+         setWalletNetwork, setIsLoading, setBlockchainData } = useContent()
 
     const [_trx, setTrx] = React.useState<any[]>([])
 
-    const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement |
+         HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target
         setFormValues({
             ...formValues,
