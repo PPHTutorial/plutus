@@ -18,7 +18,7 @@ import { redirect } from 'next/navigation'
 
 
 export default async function Home() {
-  redirect("/maintenance")
+  //redirect("/maintenance")
 
   
   const headersList = headers()
