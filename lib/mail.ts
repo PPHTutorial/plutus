@@ -13,20 +13,21 @@ export const transporter = nodemailer.createTransport({
 });
 
 interface MailOptions {
+    from: string;
     to: string;
     subject: string;
     text?: string;
     html?: string;
 }
 
-export const sendEmail = async ({ to, subject, text, html }: MailOptions) => {
+export const sendEmail = async ({from, to, subject, text, html }: MailOptions) => {
     if (!SMTP_USER || !SMTP_PASS || !SMTP_HOST || !SMTP_PORT) {
         throw new Error('Missing SMTP configuration in .env file');
     }
 
     try {
         const info = await transporter.sendMail({
-            from: `"Cryptoflash Support" <${SMTP_USER}>`, // Sender address
+            from: `${from} <${SMTP_USER}>`, // Sender address
             to,
             subject,
             text,
