@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
         const referralUrl = `${baseUrl}/?ref=${referralCode}`
 
         // Generate platform-specific sharing URLs
-        const sharingMessage = "Flash your favorite crypto (BTC, USDT, ETH, LTC, SOL, BNB, etc), with Plutus Crypto Flasher. Join now and get a whooping welcome bonus of $50 instantly and other exciting offers."
+        const sharingMessage = "Flash your favorite crypto (BTC, USDT, ETH, LTC, SOL, BNB, etc), with Plutus Crypto Flasher. Join now and get a whooping welcome bonus of $10 instantly and other exciting offers."
         const sharingUrls = {
             twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(sharingMessage)}&url=${encodeURIComponent(referralUrl)}&source=twitter`,
             facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}&quote=${encodeURIComponent(sharingMessage)}&source=facebook`,

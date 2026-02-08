@@ -18,7 +18,7 @@ export const pricingPlans: PricingPlan[] = [
         id: 'starter',
         title: 'Starter Plan',
         description: 'Perfect for beginners getting started with crypto flashing',
-        price: 300,
+        price: 45,
         accessType: AccessType.SMALL,
         features: [
             'Up to $15,000 flash limit per transaction',
@@ -35,7 +35,7 @@ export const pricingPlans: PricingPlan[] = [
         id: 'professional',
         title: 'Professional Plan',
         description: 'Most popular choice for serious crypto traders and professionals',
-        price: 750,
+        price: 60,
         accessType: AccessType.MEDIUM,
         popular: true,
         badge: 'Most Popular',
@@ -54,7 +54,7 @@ export const pricingPlans: PricingPlan[] = [
         id: 'enterprise',
         title: 'Enterprise Plan',
         description: 'Advanced features for high-volume traders and institutions',
-        price: 2500,
+        price: 120,
         accessType: AccessType.LARGE,
         features: [
             'Up to $75,000 flash limit per transaction',
@@ -71,7 +71,7 @@ export const pricingPlans: PricingPlan[] = [
         id: 'institutional',
         title: 'Institutional Plan',
         description: 'Ultimate solution for large institutions and enterprise clients',
-        price: 7000,
+        price: 1000,
         accessType: AccessType.XLARGE,
         badge: 'Premium',
         features: [

@@ -253,7 +253,7 @@ export default function ReferralPage() {
                         <li>• Referral rewards are paid monthly to your account balance</li>
                         <li>• Self-referrals and fraudulent activities will result in account suspension</li>
                         <li>• Commission rates may change with 30 days notice</li>
-                        <li>• Minimum payout threshold is $50</li>
+                        <li>• Minimum payout threshold is $100</li>
                         <li>• Referral bonuses are one-time payments per successful referral</li>
                     </ul>
                 </div>

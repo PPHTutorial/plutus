@@ -57,14 +57,14 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Credit $50 deposit to the new user upon signup
+    // Credit $10 deposit to the new user upon signup
     await prisma.payment.create({
       data: {
         transactionId: `signup_bonus_${Date.now()}`,
         userId: user.id,
         paymentMethod: 'BALANCE',
         provider: 'INTERNAL',
-        amount: 50,
+        amount: 10,
         currency: 'USD',
         status: 'COMPLETED',        
       }
